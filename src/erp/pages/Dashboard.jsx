@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  FiShoppingCart, FiTruck, FiDollarSign, FiPackage, 
-  FiAlertTriangle, FiTrendingUp, FiUsers, FiClock
+import {
+  FiShoppingCart, FiTruck, FiDollarSign, FiPackage,
+  FiAlertTriangle, FiTrendingUp, FiClock
 } from 'react-icons/fi';
 import useDashboardStore from '../../store/dashboardStore';
 import useAuthStore from '../../store/authStore';
