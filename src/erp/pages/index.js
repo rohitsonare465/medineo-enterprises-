@@ -1,0 +1,14 @@
+export { default as Login } from './Login';
+export { default as Dashboard } from './Dashboard';
+export { default as Sales } from './Sales';
+export { default as NewSale } from './NewSale';
+export { default as Purchases } from './Purchases';
+export { default as NewPurchase } from './NewPurchase';
+export { default as Customers } from './Customers';
+export { default as Vendors } from './Vendors';
+export { default as Medicines } from './Medicines';
+export { default as Stock } from './Stock';
+export { default as Payments } from './Payments';
+export { default as Ledger } from './Ledger';
+export { default as Reports } from './Reports';
+export { default as Settings } from './Settings';

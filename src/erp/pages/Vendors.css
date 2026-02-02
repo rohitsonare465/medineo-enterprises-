@@ -1,0 +1,24 @@
+.vendors-page .filters-card {
+  margin-bottom: 1rem;
+}
+
+.vendors-page .text-muted {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+.vendors-page .text-danger {
+  color: #dc2626;
+}
+
+.vendors-page .btn-icon {
+  margin-right: 0.5rem;
+}
+
+.vendors-page .btn-icon.text-danger {
+  color: #ef4444;
+}
+
+.vendors-page .btn-icon.text-danger:hover {
+  color: #dc2626;
+}

@@ -1,0 +1,55 @@
+.new-purchase-page .purchase-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.vendor-info-box {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+}
+
+.vendor-info-box p {
+  margin: 0.25rem 0;
+  font-size: 0.875rem;
+  color: #1e40af;
+}
+
+.batch-input {
+  width: 80px;
+  padding: 0.375rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+}
+
+.date-input {
+  width: 120px;
+  padding: 0.375rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+}
+
+.price-input {
+  width: 70px;
+  padding: 0.375rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+  text-align: right;
+}
+
+.gst-select {
+  width: 60px;
+  padding: 0.375rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.375rem;
+}
+
+@media (max-width: 1200px) {
+  .new-purchase-page .purchase-form-grid {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,287 @@
+/* Common ERP Styles - Shared across all ERP pages */
+
+/* Layout */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0;
+}
+
+.page-subtitle {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0.25rem 0 0;
+}
+
+/* Cards */
+.card {
+  background: #fff;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: linear-gradient(90deg, #4ade80 0%, #22c55e 100%);
+  color: #000;
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(74, 222, 128, 0.4);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  transform: none;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #e5e7eb;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
+}
+
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-icon {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: #6b7280;
+  transition: color 0.2s;
+}
+
+.btn-icon:hover {
+  color: #4ade80;
+}
+
+/* Forms */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
+  margin-bottom: 0.5rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
+  background: #fff;
+  color: #1a1a2e;
+  transition: border-color 0.2s;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #4ade80;
+}
+
+.form-input::placeholder {
+  color: #9ca3af;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+/* Search Box */
+.search-box {
+  position: relative;
+  flex: 1;
+  min-width: 200px;
+}
+
+.search-box .search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+}
+
+.search-box .form-input {
+  padding-left: 2.75rem;
+}
+
+/* Filters */
+.filters-row {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6b7280;
+}
+
+/* Tables */
+.table-container {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.data-table th {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: #f9fafb;
+}
+
+.data-table tbody tr:hover {
+  background: #f9fafb;
+}
+
+.data-table td {
+  font-size: 0.875rem;
+  color: #1a1a2e;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Badges */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border-radius: 9999px;
+}
+
+.badge-success {
+  background: rgba(74, 222, 128, 0.15);
+  color: #16a34a;
+}
+
+.badge-warning {
+  background: rgba(251, 146, 60, 0.15);
+  color: #ea580c;
+}
+
+.badge-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: #dc2626;
+}
+
+.badge-info {
+  background: rgba(96, 165, 250, 0.15);
+  color: #2563eb;
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 0 0;
+  border-top: 1px solid #f3f4f6;
+  margin-top: 1rem;
+}
+
+.page-info {
+  font-size: 0.875rem;
+  color: #6b7280;
+}
+
+/* Utilities */
+.text-muted {
+  color: #9ca3af;
+}
+
+.text-success {
+  color: #16a34a;
+}
+
+.text-danger {
+  color: #dc2626;
+}
+
+.text-warning {
+  color: #ea580c;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filters-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-box {
+    min-width: 100%;
+  }
+  
+  .data-table th,
+  .data-table td {
+    padding: 0.75rem 0.5rem;
+    font-size: 0.75rem;
+  }
+}

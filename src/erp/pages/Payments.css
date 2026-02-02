@@ -1,0 +1,22 @@
+.payments-page .header-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.payments-page .filters-card {
+  margin-bottom: 1rem;
+}
+
+.payments-page .text-success {
+  color: #16a34a;
+  font-weight: 600;
+}
+
+.payments-page .text-danger {
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.payments-page .capitalize {
+  text-transform: capitalize;
+}

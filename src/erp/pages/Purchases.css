@@ -1,0 +1,11 @@
+.purchases-page .filters-card {
+  margin-bottom: 1rem;
+}
+
+.purchases-page .text-success {
+  color: #16a34a;
+}
+
+.purchases-page .text-danger {
+  color: #dc2626;
+}
