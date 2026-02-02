@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  frontend:
+    name: Frontend build
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - run: npm ci
+      - run: npm run build
+        env:
+          CI: true
+          REACT_APP_API_URL: http://localhost:5001/api/v1
+
+  backend:
+    name: Backend install
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: erp-backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: npm
+          cache-dependency-path: erp-backend/package-lock.json
+      - run: npm ci
+      - run: node -c src/index.js
