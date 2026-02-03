@@ -1,6 +1,7 @@
 const Inquiry = require('../models/Inquiry');
 const Customer = require('../models/Customer');
 const { PAGINATION } = require('../config/constants');
+const { sendInquiryNotification } = require('../config/email');
 
 // @desc    Get all inquiries
 // @route   GET /api/v1/inquiries
@@ -86,6 +87,11 @@ exports.getInquiry = async (req, res, next) => {
 exports.createInquiry = async (req, res, next) => {
   try {
     const inquiry = await Inquiry.create(req.body);
+
+    // Send email notification to medineoenterprises@gmail.com
+    sendInquiryNotification(inquiry).catch(err => {
+      console.error('Failed to send inquiry notification:', err);
+    });
 
     res.status(201).json({
       success: true,
