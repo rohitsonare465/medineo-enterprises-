@@ -7,6 +7,7 @@ import {
     FaCheck,
     FaPaperPlane
 } from 'react-icons/fa';
+import api from '../services/api';
 import './Contact.css';
 
 function Contact() {
@@ -80,21 +81,16 @@ function Contact() {
         setSubmitStatus(null);
 
         try {
-            // Simulate API call - Replace with actual ERP integration
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            // For ERP integration, the data structure is ready:
-            // POST to your ERP endpoint with formData mapped as:
-            // {
-            //   lead: {
-            //     organization: formData.organization_name,
-            //     contact_name: formData.contact_person,
-            //     phone: formData.phone,
-            //     email: formData.email,
-            //     city: formData.city,
-            //     description: formData.requirement_message
-            //   }
-            // }
+            // Send inquiry to backend API
+            await api.post('/inquiries', {
+                name: formData.contact_person,
+                company: formData.organization_name,
+                phone: formData.phone,
+                email: formData.email,
+                city: formData.city,
+                message: formData.requirement_message,
+                source: 'website'
+            });
 
             setSubmitStatus('success');
             setFormData({
@@ -106,6 +102,7 @@ function Contact() {
                 requirement_message: ''
             });
         } catch (error) {
+            console.error('Inquiry submission error:', error);
             setSubmitStatus('error');
         } finally {
             setIsSubmitting(false);
