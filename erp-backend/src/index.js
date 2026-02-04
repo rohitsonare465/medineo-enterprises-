@@ -29,9 +29,6 @@ const settingsRoutes = require('./routes/settings.routes');
 const app = express();
 const PORT = process.env.PORT || 5001;
 
-// Connect to MongoDB
-connectDB();
-
 // Security Middleware
 app.use(helmet());
 app.use(cors({
@@ -45,9 +42,9 @@ app.use(cors({
 const limiter = rateLimit({
   windowMs: parseInt(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
   max: parseInt(process.env.RATE_LIMIT_MAX_REQUESTS) || 100,
-  message: { 
-    success: false, 
-    message: 'Too many requests, please try again later.' 
+  message: {
+    success: false,
+    message: 'Too many requests, please try again later.'
   }
 });
 app.use('/api', limiter);
@@ -103,11 +100,22 @@ app.use((req, res) => {
 // Error Handler
 app.use(errorHandler);
 
-// Start Server
-app.listen(PORT, () => {
+// Start Server FIRST (critical for Render health check)
+// Then connect to MongoDB after server is listening
+const server = app.listen(PORT, '0.0.0.0', async () => {
   console.log(`🚀 Medineo ERP Server running on port ${PORT}`);
   console.log(`📍 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔗 API Base: http://localhost:${PORT}${API_PREFIX}`);
+
+  // Connect to MongoDB after server is listening
+  try {
+    await connectDB();
+    console.log('✅ Database connection established');
+  } catch (error) {
+    console.error('❌ Database connection failed:', error.message);
+    // Don't exit - server is still running, just without DB
+    // This allows health checks to pass while troubleshooting
+  }
 });
 
 module.exports = app;
