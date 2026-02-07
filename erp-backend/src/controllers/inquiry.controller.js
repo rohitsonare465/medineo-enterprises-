@@ -14,19 +14,19 @@ exports.getInquiries = async (req, res, next) => {
 
     // Build query
     const query = {};
-    
+
     if (req.query.status) {
       query.status = req.query.status;
     }
-    
+
     if (req.query.source) {
       query.source = req.query.source;
     }
-    
+
     if (req.query.priority) {
       query.priority = req.query.priority;
     }
-    
+
     if (req.query.assignedTo) {
       query.assignedTo = req.query.assignedTo;
     }
@@ -89,14 +89,13 @@ exports.createInquiry = async (req, res, next) => {
     const inquiry = await Inquiry.create(req.body);
 
     // Send email notification to medineoenterprises@gmail.com
-    sendInquiryNotification(inquiry).catch(err => {
-      console.error('Failed to send inquiry notification:', err);
-    });
+    const emailResult = await sendInquiryNotification(inquiry);
 
     res.status(201).json({
       success: true,
       message: 'Inquiry submitted successfully',
-      data: inquiry
+      data: inquiry,
+      emailResult
     });
   } catch (error) {
     next(error);
