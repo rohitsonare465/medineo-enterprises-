@@ -32,10 +32,35 @@ const PORT = process.env.PORT || 5001;
 // Security Middleware
 app.use(helmet());
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
+  origin: (origin, callback) => {
+    // Basic allowed origins for functionality
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://localhost:5001'
+    ];
+
+    // Add CORS_ORIGIN from environment if it exists
+    if (process.env.CORS_ORIGIN) {
+      if (process.env.CORS_ORIGIN.includes(',')) {
+        allowedOrigins.push(...process.env.CORS_ORIGIN.split(',').map(o => o.trim()));
+      } else {
+        allowedOrigins.push(process.env.CORS_ORIGIN.trim());
+      }
+    }
+
+    // Allow requests with no origin (like mobile apps or curl requests)
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('Blocked by CORS:', origin);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
 }));
 
 // Rate Limiting
