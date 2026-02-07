@@ -2,10 +2,12 @@ const nodemailer = require('nodemailer');
 
 // Create transporter using Gmail SMTP
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true, // true for 465, false for other ports
   auth: {
     user: process.env.EMAIL_USER || 'medineoenterprises@gmail.com',
-    pass: process.env.EMAIL_PASSWORD // Gmail App Password (not regular password)
+    pass: process.env.EMAIL_PASSWORD // Gmail App Password
   }
 });
 
