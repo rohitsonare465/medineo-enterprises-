@@ -48,6 +48,15 @@ app.use(cors({
       }
     }
 
+    // Add FRONTEND_URL from environment (Render default)
+    if (process.env.FRONTEND_URL) {
+      if (process.env.FRONTEND_URL.includes(',')) {
+        allowedOrigins.push(...process.env.FRONTEND_URL.split(',').map(o => o.trim()));
+      } else {
+        allowedOrigins.push(process.env.FRONTEND_URL.trim());
+      }
+    }
+
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin) return callback(null, true);
 
