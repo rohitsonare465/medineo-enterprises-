@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Counter = require('./Counter');
 
 // Purchase Item Schema (embedded in Purchase)
 const purchaseItemSchema = new mongoose.Schema({
@@ -259,24 +260,19 @@ const purchaseSchema = new mongoose.Schema({
 });
 
 // Auto-generate invoice number
-purchaseSchema.pre('save', async function(next) {
-  if (!this.invoiceNumber || this.isNew) {
-    const currentYear = new Date().getFullYear();
-    const currentMonth = new Date().getMonth() + 1;
-    const financialYear = currentMonth >= 4 
-      ? `${currentYear}-${(currentYear + 1).toString().slice(-2)}`
-      : `${currentYear - 1}-${currentYear.toString().slice(-2)}`;
-    
-    const count = await mongoose.model('Purchase').countDocuments({
-      createdAt: {
-        $gte: new Date(currentMonth >= 4 ? currentYear : currentYear - 1, 3, 1),
-        $lt: new Date(currentMonth >= 4 ? currentYear + 1 : currentYear, 3, 1)
-      }
-    });
-    
-    this.invoiceNumber = `PUR/${financialYear}/${String(count + 1).padStart(5, '0')}`;
+purchaseSchema.pre('validate', async function(next) {
+  try {
+    if (!this.invoiceNumber) {
+      const { formatted } = await Counter.getNextSequence('purchase_invoice', 'PUR');
+      this.invoiceNumber = formatted;
+    }
+    next();
+  } catch (error) {
+    next(error);
   }
-  
+});
+
+purchaseSchema.pre('save', function(next) {
   // Calculate totals
   this.totalItems = this.items.length;
   this.totalQuantity = this.items.reduce((sum, item) => sum + item.quantity + item.freeQuantity, 0);
@@ -295,7 +291,6 @@ purchaseSchema.pre('save', async function(next) {
 });
 
 // Indexes
-purchaseSchema.index({ invoiceNumber: 1 });
 purchaseSchema.index({ vendor: 1, purchaseDate: -1 });
 purchaseSchema.index({ purchaseDate: -1 });
 purchaseSchema.index({ paymentStatus: 1 });

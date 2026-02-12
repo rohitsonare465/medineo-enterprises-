@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Counter = require('./Counter');
 
 const paymentSchema = new mongoose.Schema({
   // Payment Reference Number
@@ -67,9 +68,13 @@ const paymentSchema = new mongoose.Schema({
 
   // Linked Invoices (for allocation)
   linkedInvoices: [{
+    invoiceModel: {
+      type: String,
+      enum: ['Sale', 'Purchase']
+    },
     invoiceId: {
       type: mongoose.Schema.Types.ObjectId,
-      refPath: 'paymentType'
+      refPath: 'invoiceModel'
     },
     invoiceNumber: String,
     invoiceAmount: Number,
@@ -117,30 +122,21 @@ const paymentSchema = new mongoose.Schema({
 
 // Auto-generate payment number before validation
 paymentSchema.pre('validate', async function (next) {
-  if (!this.paymentNumber || this.isNew) {
-    const currentYear = new Date().getFullYear();
-    const currentMonth = new Date().getMonth() + 1;
-    const financialYear = currentMonth >= 4
-      ? `${currentYear}-${(currentYear + 1).toString().slice(-2)}`
-      : `${currentYear - 1}-${currentYear.toString().slice(-2)}`;
-
-    const prefix = this.paymentType === 'customer_receipt' ? 'REC' : 'PAY';
-
-    const count = await mongoose.model('Payment').countDocuments({
-      paymentType: this.paymentType,
-      createdAt: {
-        $gte: new Date(currentMonth >= 4 ? currentYear : currentYear - 1, 3, 1),
-        $lt: new Date(currentMonth >= 4 ? currentYear + 1 : currentYear, 3, 1)
-      }
-    });
-
-    this.paymentNumber = `${prefix}/${financialYear}/${String(count + 1).padStart(5, '0')}`;
+  try {
+    if (!this.paymentNumber) {
+      const isCustomerReceipt = this.paymentType === 'customer_receipt';
+      const prefix = isCustomerReceipt ? 'REC' : 'PAY';
+      const counterName = isCustomerReceipt ? 'customer_receipt' : 'vendor_payment';
+      const { formatted } = await Counter.getNextSequence(`payment_${counterName}`, prefix);
+      this.paymentNumber = formatted;
+    }
+    next();
+  } catch (error) {
+    next(error);
   }
-  next();
 });
 
 // Indexes
-paymentSchema.index({ paymentNumber: 1 });
 paymentSchema.index({ paymentType: 1, paymentDate: -1 });
 paymentSchema.index({ customer: 1, paymentDate: -1 });
 paymentSchema.index({ vendor: 1, paymentDate: -1 });

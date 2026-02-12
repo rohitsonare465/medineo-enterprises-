@@ -39,11 +39,11 @@ api.interceptors.response.use(
             refreshToken
           });
 
-          const { accessToken, refreshToken: newRefreshToken } = response.data;
-          localStorage.setItem('accessToken', accessToken);
+          const { token, refreshToken: newRefreshToken } = response.data.data;
+          localStorage.setItem('accessToken', token);
           localStorage.setItem('refreshToken', newRefreshToken);
 
-          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+          originalRequest.headers.Authorization = `Bearer ${token}`;
           return api(originalRequest);
         }
       } catch (refreshError) {

@@ -1,4 +1,3 @@
-const mongoose = require('mongoose');
 const Purchase = require('../models/Purchase');
 const Batch = require('../models/Batch');
 const Medicine = require('../models/Medicine');
@@ -101,22 +100,6 @@ exports.createPurchase = async (req, res, next) => {
         message: 'Vendor not found'
       });
     }
-
-    // Generate invoice number
-    const currentYear = new Date().getFullYear();
-    const currentMonth = new Date().getMonth() + 1;
-    const financialYear = currentMonth >= 4 
-      ? `${currentYear}-${(currentYear + 1).toString().slice(-2)}`
-      : `${currentYear - 1}-${currentYear.toString().slice(-2)}`;
-    
-    const count = await Purchase.countDocuments({
-      createdAt: {
-        $gte: new Date(currentMonth >= 4 ? currentYear : currentYear - 1, 3, 1),
-        $lt: new Date(currentMonth >= 4 ? currentYear + 1 : currentYear, 3, 1)
-      }
-    });
-    
-    const invoiceNumber = `PUR/${financialYear}/${String(count + 1).padStart(5, '0')}`;
 
     // Determine GST type
     const isInterState = gstType === 'inter_state';
@@ -224,7 +207,6 @@ exports.createPurchase = async (req, res, next) => {
 
     // Create purchase
     const purchase = await Purchase.create({
-      invoiceNumber,
       vendorInvoiceNumber,
       vendorInvoiceDate,
       vendor,

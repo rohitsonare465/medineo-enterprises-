@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Counter = require('./Counter');
 
 // Sale Item Schema (embedded in Sale)
 const saleItemSchema = new mongoose.Schema({
@@ -260,23 +261,15 @@ const saleSchema = new mongoose.Schema({
 
 // Auto-generate invoice number before validation
 saleSchema.pre('validate', async function (next) {
-  if (!this.invoiceNumber || this.isNew) {
-    const currentYear = new Date().getFullYear();
-    const currentMonth = new Date().getMonth() + 1;
-    const financialYear = currentMonth >= 4
-      ? `${currentYear}-${(currentYear + 1).toString().slice(-2)}`
-      : `${currentYear - 1}-${currentYear.toString().slice(-2)}`;
-
-    const count = await mongoose.model('Sale').countDocuments({
-      createdAt: {
-        $gte: new Date(currentMonth >= 4 ? currentYear : currentYear - 1, 3, 1),
-        $lt: new Date(currentMonth >= 4 ? currentYear + 1 : currentYear, 3, 1)
-      }
-    });
-
-    this.invoiceNumber = `INV/${financialYear}/${String(count + 1).padStart(5, '0')}`;
+  try {
+    if (!this.invoiceNumber) {
+      const { formatted } = await Counter.getNextSequence('sale_invoice', 'INV');
+      this.invoiceNumber = formatted;
+    }
+    next();
+  } catch (error) {
+    next(error);
   }
-  next();
 });
 
 // Calculate totals before saving
@@ -299,7 +292,6 @@ saleSchema.pre('save', function (next) {
 });
 
 // Indexes
-saleSchema.index({ invoiceNumber: 1 });
 saleSchema.index({ customer: 1, saleDate: -1 });
 saleSchema.index({ saleDate: -1 });
 saleSchema.index({ paymentStatus: 1 });

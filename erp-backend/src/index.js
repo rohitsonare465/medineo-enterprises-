@@ -153,4 +153,16 @@ const server = app.listen(PORT, '0.0.0.0', async () => {
   }
 });
 
+server.on('error', (error) => {
+  if (error.code === 'EADDRINUSE') {
+    console.error(`❌ Port ${PORT} is already in use.`);
+  } else if (error.code === 'EACCES' || error.code === 'EPERM') {
+    console.error(`❌ Permission denied while binding to port ${PORT}.`);
+  } else {
+    console.error('❌ Server startup error:', error.message);
+  }
+
+  process.exit(1);
+});
+
 module.exports = app;

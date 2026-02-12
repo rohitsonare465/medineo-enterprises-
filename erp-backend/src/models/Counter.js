@@ -5,7 +5,8 @@ const counterSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
+    trim: true
   },
   prefix: {
     type: String,
@@ -33,14 +34,25 @@ counterSchema.statics.getNextSequence = async function(name, prefix) {
     : `${year - 1}-${year.toString().slice(-2)}`;
   
   const counter = await this.findOneAndUpdate(
-    { name, financialYear },
-    { 
-      $inc: { sequence: 1 },
-      $setOnInsert: { prefix, financialYear }
-    },
-    { 
-      new: true, 
-      upsert: true 
+    { name },
+    [
+      {
+        $set: {
+          prefix,
+          financialYear,
+          sequence: {
+            $cond: [
+              { $eq: ['$financialYear', financialYear] },
+              { $add: [{ $ifNull: ['$sequence', 0] }, 1] },
+              1
+            ]
+          }
+        }
+      }
+    ],
+    {
+      new: true,
+      upsert: true
     }
   );
   

@@ -103,6 +103,9 @@ exports.getPayment = async (req, res, next) => {
 exports.createCustomerReceipt = async (req, res, next) => {
   try {
     const { customer, amount, paymentMode, paymentDate, bankName, chequeNumber, chequeDate, transactionReference, linkedInvoices, notes } = req.body;
+    const normalizedLinkedInvoices = Array.isArray(linkedInvoices)
+      ? linkedInvoices.map((invoice) => ({ ...invoice, invoiceModel: 'Sale' }))
+      : [];
 
     // Get customer
     const customerDoc = await Customer.findById(customer);
@@ -127,7 +130,7 @@ exports.createCustomerReceipt = async (req, res, next) => {
       chequeNumber,
       chequeDate,
       transactionReference,
-      linkedInvoices,
+      linkedInvoices: normalizedLinkedInvoices,
       previousOutstanding,
       newOutstanding: previousOutstanding - amount,
       notes,
@@ -140,14 +143,15 @@ exports.createCustomerReceipt = async (req, res, next) => {
     await customerDoc.save();
 
     // Update linked invoices if provided
-    if (linkedInvoices && linkedInvoices.length > 0) {
-      for (const invoice of linkedInvoices) {
-        await Sale.findByIdAndUpdate(
-          invoice.invoiceId,
-          {
-            $inc: { paidAmount: invoice.allocatedAmount }
-          }
-        );
+    if (normalizedLinkedInvoices.length > 0) {
+      for (const invoice of normalizedLinkedInvoices) {
+        const saleDoc = await Sale.findById(invoice.invoiceId);
+        if (!saleDoc) {
+          continue;
+        }
+
+        saleDoc.paidAmount += Number(invoice.allocatedAmount) || 0;
+        await saleDoc.save();
       }
     }
 
@@ -181,6 +185,9 @@ exports.createCustomerReceipt = async (req, res, next) => {
 exports.createVendorPayment = async (req, res, next) => {
   try {
     const { vendor, amount, paymentMode, paymentDate, bankName, chequeNumber, chequeDate, transactionReference, linkedInvoices, notes } = req.body;
+    const normalizedLinkedInvoices = Array.isArray(linkedInvoices)
+      ? linkedInvoices.map((invoice) => ({ ...invoice, invoiceModel: 'Purchase' }))
+      : [];
 
     // Get vendor
     const vendorDoc = await Vendor.findById(vendor);
@@ -205,7 +212,7 @@ exports.createVendorPayment = async (req, res, next) => {
       chequeNumber,
       chequeDate,
       transactionReference,
-      linkedInvoices,
+      linkedInvoices: normalizedLinkedInvoices,
       previousOutstanding,
       newOutstanding: previousOutstanding - amount,
       notes,
@@ -218,14 +225,15 @@ exports.createVendorPayment = async (req, res, next) => {
     await vendorDoc.save();
 
     // Update linked invoices if provided
-    if (linkedInvoices && linkedInvoices.length > 0) {
-      for (const invoice of linkedInvoices) {
-        await Purchase.findByIdAndUpdate(
-          invoice.invoiceId,
-          {
-            $inc: { paidAmount: invoice.allocatedAmount }
-          }
-        );
+    if (normalizedLinkedInvoices.length > 0) {
+      for (const invoice of normalizedLinkedInvoices) {
+        const purchaseDoc = await Purchase.findById(invoice.invoiceId);
+        if (!purchaseDoc) {
+          continue;
+        }
+
+        purchaseDoc.paidAmount += Number(invoice.allocatedAmount) || 0;
+        await purchaseDoc.save();
       }
     }
 

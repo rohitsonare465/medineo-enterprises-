@@ -1,0 +1,415 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500&family=Noto+Serif:wght@600;700&family=Shadows+Into+Light&display=swap');
+
+:root {
+  --theme-0: #2b2522;
+  --theme-1: #c44c2b;
+  --theme-2: #6b6158;
+  --theme-3: #f2b23c;
+  --theme-4: #fbf7f1;
+  --theme-5: #e7dfd4;
+  --theme-6: #2f8a86;
+  --white: #ffffff;
+  --black: #000000;
+  --shadow-soft: 0 10px 30px rgba(20, 16, 12, 0.12);
+  --shadow-card: 0 6px 18px rgba(16, 12, 8, 0.12);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Heebo', system-ui, -apple-system, sans-serif;
+  color: var(--theme-0);
+  background: var(--theme-4);
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+  height: auto;
+}
+
+.section-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.guten-section {
+  position: relative;
+}
+
+.guten-container {
+  width: min(1140px, 100%);
+  margin: 0 auto;
+  padding: 0 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+}
+
+.guten-column-gap-no {
+  gap: 0;
+}
+
+.guten-column-gap-default {
+  gap: 28px;
+}
+
+.layout-fullwidth .guten-container {
+  width: min(1200px, 100%);
+}
+
+.guten-column {
+  flex: 1 1 280px;
+  min-width: 0;
+}
+
+.guten-column-wrapper {
+  height: 100%;
+}
+
+.guten-background-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.guten-element-hide {
+  opacity: 1;
+  transform: none;
+}
+
+/* Typography */
+.gutenverse-text-editor,
+.guten-icon-list,
+.guten-advanced-heading .heading-subtitle {
+  color: var(--theme-2);
+}
+
+.wp-block-gutenverse-heading,
+.guten-advanced-heading .heading-title {
+  font-family: 'Noto Serif', serif;
+  color: var(--theme-0);
+  margin: 0;
+}
+
+.guten-advanced-heading .heading-subtitle {
+  display: inline-block;
+  font-family: 'Shadows Into Light', cursive;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--theme-3);
+  margin-bottom: 10px;
+}
+
+/* Hero */
+.guten-P6sVWZ {
+  background-image: url('https://aayudhresearch.com/wp-content/uploads/2025/08/mom-at-home-during-lockdown-with-kids-overwhelmed-and-sad.webp');
+  background-size: cover;
+  background-position: bottom center;
+  color: var(--white);
+}
+
+.guten-P6sVWZ > .guten-background-overlay {
+  background: linear-gradient(120deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.05));
+}
+
+.guten-XvGz0E,
+.guten-0iCbAc {
+  color: var(--white);
+}
+
+/* Buttons */
+.guten-button-wrapper {
+  display: inline-flex;
+}
+
+.guten-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  border: 0;
+  font-family: 'Noto Serif', serif;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  padding: 14px 28px;
+  background: var(--theme-3);
+  color: var(--theme-0);
+  transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 10px 20px rgba(244, 180, 60, 0.2);
+}
+
+.guten-button:hover {
+  background: var(--theme-1);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 14px 28px rgba(196, 76, 43, 0.25);
+}
+
+.guten-S13jmJ .guten-button,
+.guten-vQjGjy .guten-button,
+.guten-AiSmSK .guten-button,
+.guten-tX25f7 .guten-button,
+.guten-UW3u4I .guten-button,
+.guten-OEaoc0 .guten-button,
+.guten-y0696j .guten-button,
+.guten-wbCHLT .guten-button,
+.guten-kYZfOm .guten-button,
+.guten-dK3j5i .guten-button {
+  background: transparent;
+  color: var(--theme-0);
+  box-shadow: none;
+}
+
+.guten-S13jmJ .guten-button:hover,
+.guten-vQjGjy .guten-button:hover,
+.guten-AiSmSK .guten-button:hover,
+.guten-tX25f7 .guten-button:hover,
+.guten-UW3u4I .guten-button:hover,
+.guten-OEaoc0 .guten-button:hover,
+.guten-y0696j .guten-button:hover,
+.guten-wbCHLT .guten-button:hover,
+.guten-kYZfOm .guten-button:hover,
+.guten-dK3j5i .guten-button:hover {
+  background: rgba(244, 180, 60, 0.12);
+  color: var(--theme-0);
+  transform: none;
+}
+
+/* Icon boxes */
+.guten-icon-box-wrapper {
+  background: var(--white);
+  padding: 36px 30px;
+  box-shadow: var(--shadow-card);
+  border-top: 6px solid var(--theme-3);
+}
+
+.guten-icon-box .icon {
+  color: var(--theme-3);
+  font-size: 48px;
+}
+
+.guten-2k96m4 .guten-icon-box-wrapper {
+  background: var(--theme-3);
+  color: var(--theme-0);
+  border-top: 0;
+}
+
+.guten-2k96m4 .guten-icon-box-wrapper .icon,
+.guten-2k96m4 .guten-icon-box-wrapper .title,
+.guten-2k96m4 .guten-icon-box-wrapper .icon-box-description {
+  color: var(--theme-0);
+}
+
+/* Images */
+.guten-image-wrapper {
+  overflow: hidden;
+}
+
+.gutenverse-image-box-filled {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.guten-image-wrapper:hover .gutenverse-image-box-filled {
+  transform: scale(1.03);
+}
+
+/* Progress bars */
+.guten-progress-bar .skill-bar {
+  background: var(--theme-5);
+  height: 7px;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.guten-progress-bar .skill-track {
+  background: var(--theme-6);
+  height: 7px;
+  border-radius: 999px;
+}
+
+.guten-progress-bar .number-percentage-wrapper {
+  background: var(--theme-0);
+  color: var(--white);
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-family: 'Noto Serif', serif;
+  font-size: 12px;
+  transform: translateY(-8px);
+}
+
+/* Cards and panels */
+.guten-MtSiqV,
+.guten-vKYU2p,
+.guten-iUNh3C,
+.guten-iuPun5,
+.guten-MFvZSc,
+.guten-sx88Un .guten-post-block,
+.guten-srfN3n .guten-post-block,
+.guten-zbn9PE,
+.guten-a5L4qz,
+.guten-blGiFL,
+.guten-KeDmse,
+.guten-9l82yy,
+.guten-ah14Jj {
+  background: var(--white);
+  box-shadow: var(--shadow-soft);
+}
+
+/* Themed sections */
+.guten-Rthj1H,
+.guten-byxivr {
+  background: var(--theme-4);
+}
+
+.guten-byxivr > .guten-background-overlay {
+  background-image: url('https://aayudhresearch.com/wp-content/uploads/2025/08/Hands.webp');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.08;
+}
+
+.guten-7VMORB {
+  background-image: url('https://aayudhresearch.com/wp-content/uploads/2025/08/portrait-of-volunteer-group-posing.webp');
+  background-size: cover;
+  background-position: center;
+  color: var(--white);
+}
+
+.guten-7VMORB > .guten-background-overlay {
+  background: linear-gradient(300deg, rgba(196, 76, 43, 0.95) 40%, rgba(0, 0, 0, 0.65) 100%);
+  opacity: 0.8;
+}
+
+.guten-7VMORB .heading-title,
+.guten-7VMORB .gutenverse-text-editor {
+  color: var(--white);
+}
+
+/* Icon list */
+.guten-icon-list .list-text {
+  color: var(--theme-2);
+}
+
+.guten-icon-list i {
+  color: var(--theme-3);
+  margin-right: 8px;
+}
+
+/* Popup */
+.guten-popup {
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.guten-popup-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.guten-popup-wrapper {
+  position: relative;
+  background: var(--black);
+  max-width: 1000px;
+  width: min(100%, 1000px);
+}
+
+.guten-popup-close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--theme-3);
+  color: var(--theme-0);
+  display: grid;
+  place-items: center;
+}
+
+/* Form */
+.guten-form-builder {
+  background: var(--white);
+  border-top: 5px solid var(--theme-1);
+  box-shadow: var(--shadow-soft);
+}
+
+.gutenverse-input {
+  width: 100%;
+  padding: 14px 20px;
+  border: 1px solid var(--theme-5);
+  font-family: 'Heebo', sans-serif;
+  font-size: 14px;
+}
+
+.gutenverse-input:focus {
+  outline: none;
+  border-color: var(--theme-3);
+  box-shadow: 0 0 0 3px rgba(242, 178, 60, 0.18);
+}
+
+/* Background image columns */
+.guten-uGayZj {
+  background-image: url('https://aayudhresearch.com/wp-content/uploads/2025/08/aubergine.webp');
+  background-size: cover;
+  background-position: center;
+  min-height: 320px;
+}
+
+.guten-HCC6Xp {
+  background-image: url('https://aayudhresearch.com/wp-content/uploads/2025/08/causes-image-1.webp');
+  background-size: cover;
+  background-position: center;
+  min-height: 260px;
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .guten-container {
+    gap: 20px;
+  }
+
+  .guten-button {
+    padding: 12px 22px;
+  }
+
+  .guten-uGayZj {
+    min-height: 240px;
+  }
+}
+
+@media (max-width: 640px) {
+  .guten-container {
+    padding: 0 12px;
+  }
+
+  .guten-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .guten-advanced-heading .heading-title {
+    font-size: 28px;
+  }
+}

@@ -188,7 +188,6 @@ medicineSchema.methods.updateStockFromBatches = async function() {
 
 // Indexes
 medicineSchema.index({ name: 'text', genericName: 'text', brand: 'text', manufacturer: 'text' });
-medicineSchema.index({ code: 1 });
 medicineSchema.index({ category: 1 });
 medicineSchema.index({ brand: 1 });
 medicineSchema.index({ manufacturer: 1 });

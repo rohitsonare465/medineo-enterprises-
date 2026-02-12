@@ -91,10 +91,6 @@ exports.getSale = async (req, res, next) => {
 // @access  Private
 exports.createSale = async (req, res, next) => {
   try {
-    console.log('=== SALE REQUEST BODY ===');
-    console.log(JSON.stringify(req.body, null, 2));
-    console.log('=========================');
-
     const { customer, items, gstType, paymentMode, paidAmount, notes, freightCharges, otherCharges } = req.body;
 
     // Get customer details

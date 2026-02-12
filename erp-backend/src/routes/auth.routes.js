@@ -13,10 +13,10 @@ const {
   deleteUser
 } = require('../controllers/auth.controller');
 const { protect, authorize } = require('../middleware/auth');
-const { loginValidation, registerValidation, handleValidationErrors } = require('../middleware/validation');
+const { loginValidation, registerValidation } = require('../middleware/validation');
 
 // Public routes
-router.post('/login', loginValidation, handleValidationErrors, login);
+router.post('/login', loginValidation, login);
 router.post('/refresh-token', refreshToken);
 
 // Protected routes
@@ -27,10 +27,10 @@ router.put('/password', updatePassword);
 
 // Owner only routes
 router.use(authorize('owner'));
-router.post('/register', registerValidation, handleValidationErrors, register);
+router.post('/register', registerValidation, register);
 router.route('/users')
   .get(getUsers)
-  .post(registerValidation, handleValidationErrors, createUser);
+  .post(registerValidation, createUser);
 
 router.route('/users/:id')
   .get(getUser)
