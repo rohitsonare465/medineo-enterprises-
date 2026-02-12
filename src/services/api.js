@@ -4,6 +4,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api/v1';
 
 const api = axios.create({
   baseURL: API_URL,
+  timeout: 30000, // 30s timeout for Render free tier cold starts
   headers: {
     'Content-Type': 'application/json'
   }
@@ -12,9 +13,13 @@ const api = axios.create({
 // Request interceptor to add auth token
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    // Don't attach token for login or refresh-token requests
+    const isAuthRoute = config.url?.includes('/auth/login') || config.url?.includes('/auth/refresh-token');
+    if (!isAuthRoute) {
+      const token = localStorage.getItem('accessToken');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
@@ -29,7 +34,13 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // Don't try to refresh on login failures or if already retried
+    const isAuthRoute = originalRequest.url?.includes('/auth/login') || originalRequest.url?.includes('/auth/refresh-token');
+    if (isAuthRoute || originalRequest._retry) {
+      return Promise.reject(error);
+    }
+
+    if (error.response?.status === 401) {
       originalRequest._retry = true;
 
       try {
@@ -49,7 +60,7 @@ api.interceptors.response.use(
       } catch (refreshError) {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
-        window.location.href = '/login';
+        window.location.href = '/erp/login';
         return Promise.reject(refreshError);
       }
     }
