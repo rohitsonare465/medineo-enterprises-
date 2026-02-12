@@ -37,7 +37,9 @@ app.use(cors({
     // Basic allowed origins for functionality
     const allowedOrigins = [
       'http://localhost:3000',
-      'http://localhost:5001'
+      'http://localhost:5001',
+      'https://medineoenterprises.in',
+      'https://www.medineoenterprises.in'
     ];
 
     // Add CORS_ORIGIN from environment if it exists
