@@ -30,54 +30,44 @@ const app = express();
 app.set('trust proxy', 1); // Trust Render proxy
 const PORT = process.env.PORT || 5001;
 
-// Security Middleware
-app.use(helmet());
+// CORS Middleware - must come BEFORE helmet and other middleware
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5001',
+  'https://medineoenterprises.in',
+  'https://www.medineoenterprises.in'
+];
+
+// Add env-based origins
+if (process.env.CORS_ORIGIN) {
+  allowedOrigins.push(...process.env.CORS_ORIGIN.split(',').map(o => o.trim()));
+}
+if (process.env.FRONTEND_URL) {
+  allowedOrigins.push(...process.env.FRONTEND_URL.split(',').map(o => o.trim()));
+}
+
 app.use(cors({
   origin: (origin, callback) => {
-    // Basic allowed origins for functionality
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'http://localhost:5001',
-      'https://medineoenterprises.in',
-      'https://www.medineoenterprises.in'
-    ];
-
-    // Add CORS_ORIGIN from environment if it exists
-    if (process.env.CORS_ORIGIN) {
-      if (process.env.CORS_ORIGIN.includes(',')) {
-        allowedOrigins.push(...process.env.CORS_ORIGIN.split(',').map(o => o.trim()));
-      } else {
-        allowedOrigins.push(process.env.CORS_ORIGIN.trim());
-      }
-    }
-
-    // Add FRONTEND_URL from environment (Render default)
-    if (process.env.FRONTEND_URL) {
-      if (process.env.FRONTEND_URL.includes(',')) {
-        allowedOrigins.push(...process.env.FRONTEND_URL.split(',').map(o => o.trim()));
-      } else {
-        allowedOrigins.push(process.env.FRONTEND_URL.trim());
-      }
-    }
-
-    // Allow requests with no origin (like mobile apps or curl requests)
+    // Allow requests with no origin (mobile apps, curl, server-to-server)
     if (!origin) return callback(null, true);
-
-    // Allow Vercel preview/production deployments
-    if (origin.endsWith('.vercel.app')) {
-      return callback(null, true);
-    }
-
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      console.log('Blocked by CORS:', origin);
-      callback(new Error('Not allowed by CORS'));
-    }
+    // Allow Vercel deployments
+    if (origin.endsWith('.vercel.app')) return callback(null, true);
+    // Allow listed origins
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    
+    console.log('Blocked by CORS:', origin);
+    callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin']
+}));
+
+// Security Middleware - configured to not conflict with CORS
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+  crossOriginOpenerPolicy: false,
+  contentSecurityPolicy: false
 }));
 
 // Rate Limiting
