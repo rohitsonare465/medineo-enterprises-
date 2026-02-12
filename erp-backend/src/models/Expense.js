@@ -129,7 +129,7 @@ expenseSchema.pre('validate', async function(next) {
   if (!this.expenseNumber) {
     try {
       const result = await Counter.getNextSequence('expense', 'MED/EXP');
-      this.expenseNumber = result;
+      this.expenseNumber = result.formatted;
     } catch (error) {
       return next(error);
     }
