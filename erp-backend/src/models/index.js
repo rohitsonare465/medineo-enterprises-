@@ -11,6 +11,7 @@ const Ledger = require('./Ledger');
 const Inquiry = require('./Inquiry');
 const Settings = require('./Settings');
 const Counter = require('./Counter');
+const Expense = require('./Expense');
 
 module.exports = {
   User,
@@ -24,5 +25,6 @@ module.exports = {
   Ledger,
   Inquiry,
   Settings,
-  Counter
+  Counter,
+  Expense
 };

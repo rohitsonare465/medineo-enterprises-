@@ -22,6 +22,7 @@ module.exports = {
       'stock:view', 'stock:adjust',
       'reports:view', 'reports:profit', 'reports:gst',
       'inquiries:view', 'inquiries:manage',
+      'expenses:view', 'expenses:create', 'expenses:edit', 'expenses:delete',
       'settings:view', 'settings:edit',
       'users:view', 'users:create', 'users:edit', 'users:delete'
     ],
@@ -48,6 +49,7 @@ module.exports = {
       'sales:view',
       'payments:view', 'payments:create', 'payments:edit',
       'ledger:view', 'ledger:customer', 'ledger:vendor',
+      'expenses:view', 'expenses:create', 'expenses:edit',
       'stock:view',
       'reports:view', 'reports:gst'
     ]
@@ -100,7 +102,8 @@ module.exports = {
     PAYMENT: 'MED/PAY',
     RECEIPT: 'MED/REC',
     CREDIT_NOTE: 'MED/CN',
-    DEBIT_NOTE: 'MED/DN'
+    DEBIT_NOTE: 'MED/DN',
+    EXPENSE: 'MED/EXP'
   },
 
   // Stock Alert Thresholds

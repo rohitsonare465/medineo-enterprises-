@@ -25,6 +25,7 @@ const dashboardRoutes = require('./routes/dashboard.routes');
 const reportRoutes = require('./routes/report.routes');
 const inquiryRoutes = require('./routes/inquiry.routes');
 const settingsRoutes = require('./routes/settings.routes');
+const expenseRoutes = require('./routes/expense.routes');
 
 const app = express();
 app.set('trust proxy', 1); // Trust Render proxy
@@ -120,6 +121,7 @@ app.use(`${API_PREFIX}/dashboard`, dashboardRoutes);
 app.use(`${API_PREFIX}/reports`, reportRoutes);
 app.use(`${API_PREFIX}/inquiries`, inquiryRoutes);
 app.use(`${API_PREFIX}/settings`, settingsRoutes);
+app.use(`${API_PREFIX}/expenses`, expenseRoutes);
 
 // 404 Handler
 app.use((req, res) => {

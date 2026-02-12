@@ -25,6 +25,7 @@ import Vendors from './erp/pages/Vendors';
 import Medicines from './erp/pages/Medicines';
 import Stock from './erp/pages/Stock';
 import Payments from './erp/pages/Payments';
+import Expenses from './erp/pages/Expenses';
 import Ledger from './erp/pages/Ledger';
 import Reports from './erp/pages/Reports';
 import Settings from './erp/pages/Settings';
@@ -82,6 +83,7 @@ function App() {
             <Route path="medicines" element={<Medicines />} />
             <Route path="stock" element={<Stock />} />
             <Route path="payments" element={<Payments />} />
+            <Route path="expenses" element={<Expenses />} />
             <Route path="ledger" element={<Ledger />} />
             <Route path="reports" element={<Reports />} />
             <Route path="settings" element={<Settings />} />
