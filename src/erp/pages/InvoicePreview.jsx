@@ -38,15 +38,22 @@ const InvoicePreview = () => {
     if (!invoiceRef.current) return;
     setDownloading(true);
 
+    const el = invoiceRef.current;
+    // Force a fixed pixel width for consistent PDF rendering
+    const originalWidth = el.style.width;
+    el.style.width = '794px';
+
     const opt = {
-      margin: [4, 4, 4, 4],
+      margin: [5, 5, 5, 5],
       filename: getFileName(),
       image: { type: 'jpeg', quality: 0.98 },
       html2canvas: {
-        scale: 2,
+        scale: 3,
         useCORS: true,
         letterRendering: true,
-        logging: false
+        logging: false,
+        width: 794,
+        windowWidth: 794
       },
       jsPDF: {
         unit: 'mm',
@@ -95,6 +102,7 @@ const InvoicePreview = () => {
       console.error('PDF generation failed:', error);
       toast.error('Failed to generate PDF');
     } finally {
+      el.style.width = originalWidth;
       setDownloading(false);
     }
   };

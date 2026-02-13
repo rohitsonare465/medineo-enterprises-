@@ -33,22 +33,28 @@
 
 /* ---- Company Header ---- */
 .inv-company-header {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
+  text-align: center;
   padding: 8px 0;
   border-bottom: 2px solid #000;
   margin-bottom: 0;
+  position: relative;
+}
+
+.inv-logo-area {
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
 }
 
 .inv-logo {
   width: 60px;
   height: 60px;
-  object-fit: contain;
+  vertical-align: middle;
 }
 
 .inv-company-info {
+  display: inline-block;
+  vertical-align: middle;
   text-align: center;
 }
 
@@ -182,7 +188,7 @@
 /* ---- Items Table ---- */
 .inv-items-table {
   border-top: none;
-  font-size: 8.5px;
+  font-size: 9px;
   table-layout: fixed;
 }
 
@@ -191,20 +197,18 @@
 }
 
 .inv-items-table th {
-  font-size: 7.5px;
+  font-size: 8px;
   font-weight: 700;
   text-align: center;
-  padding: 3px 1px !important;
+  padding: 3px 2px !important;
   white-space: normal;
   word-wrap: break-word;
   color: #000;
 }
 
 .inv-items-table td {
-  padding: 2px 2px !important;
-  font-size: 8.5px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  padding: 2px 3px !important;
+  font-size: 9px;
   word-wrap: break-word;
 }
 
@@ -236,9 +240,9 @@
 }
 
 .inv-total-row td {
-  padding: 4px 2px !important;
+  padding: 4px 3px !important;
   border-top: 2px solid #000;
-  font-size: 9px;
+  font-size: 9.5px;
 }
 
 /* ---- Summary Table ---- */
@@ -262,16 +266,16 @@
 
 .inv-summ-label {
   width: 32%;
-  font-size: 9px;
-  padding: 2px 6px !important;
+  font-size: 9.5px;
+  padding: 3px 6px !important;
   text-align: right;
   background: #fafafa;
 }
 
 .inv-summ-value {
   width: 20%;
-  font-size: 9px;
-  padding: 2px 6px !important;
+  font-size: 9.5px;
+  padding: 3px 6px !important;
   text-align: right;
 }
 
@@ -365,8 +369,7 @@
 }
 
 .inv-seal-area {
-  display: flex;
-  justify-content: center;
+  text-align: center;
   margin: 4px 0;
 }
 
