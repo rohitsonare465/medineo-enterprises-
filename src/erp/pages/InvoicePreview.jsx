@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { FiArrowLeft, FiDownload, FiPrinter, FiShare2 } from 'react-icons/fi';
 import html2pdf from 'html2pdf.js';
 import toast from 'react-hot-toast';

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiPlus, FiSearch, FiEye, FiPrinter, FiFileText } from 'react-icons/fi';
+import { FiPlus, FiSearch, FiPrinter, FiFileText } from 'react-icons/fi';
 import useSaleStore from '../../store/saleStore';
 import './Sales.css';
 
