@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { FiPlus, FiSearch, FiEye, FiPrinter } from 'react-icons/fi';
+import { FiPlus, FiSearch, FiEye, FiPrinter, FiFileText } from 'react-icons/fi';
 import useSaleStore from '../../store/saleStore';
 import './Sales.css';
 
@@ -107,10 +107,10 @@ const Sales = () => {
                     </td>
                     <td>
                       <div className="action-buttons">
-                        <button className="action-btn" title="View">
-                          <FiEye />
-                        </button>
-                        <button className="action-btn" title="Print">
+                        <Link to={`/erp/sales/${sale._id}/invoice`} className="action-btn" title="View Invoice">
+                          <FiFileText />
+                        </Link>
+                        <button className="action-btn" title="Print" onClick={() => window.open(`/erp/sales/${sale._id}/invoice`, '_blank')}>
                           <FiPrinter />
                         </button>
                       </div>

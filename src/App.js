@@ -26,6 +26,7 @@ import Medicines from './erp/pages/Medicines';
 import Stock from './erp/pages/Stock';
 import Payments from './erp/pages/Payments';
 import Expenses from './erp/pages/Expenses';
+import InvoicePreview from './erp/pages/InvoicePreview';
 import Ledger from './erp/pages/Ledger';
 import Reports from './erp/pages/Reports';
 import Settings from './erp/pages/Settings';
@@ -76,6 +77,7 @@ function App() {
             <Route index element={<Dashboard />} />
             <Route path="sales" element={<Sales />} />
             <Route path="sales/new" element={<NewSale />} />
+            <Route path="sales/:id/invoice" element={<InvoicePreview />} />
             <Route path="purchases" element={<Purchases />} />
             <Route path="purchases/new" element={<NewPurchase />} />
             <Route path="customers" element={<Customers />} />
