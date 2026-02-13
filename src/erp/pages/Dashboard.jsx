@@ -127,7 +127,7 @@ const Dashboard = () => {
             </div>
             <div className="money-flow-info">
               <p className="money-flow-label">Credit (Money In)</p>
-              <p className="money-flow-value">{formatCurrency(stats?.credit?.month)}</p>
+              <p className="money-flow-value">{formatCurrency(stats?.credit?.month?.total)}</p>
             </div>
           </div>
 
@@ -137,7 +137,7 @@ const Dashboard = () => {
             </div>
             <div className="money-flow-info">
               <p className="money-flow-label">Debit (Money Out)</p>
-              <p className="money-flow-value">{formatCurrency(stats?.debit?.month)}</p>
+              <p className="money-flow-value">{formatCurrency(stats?.debit?.month?.total)}</p>
             </div>
           </div>
 
@@ -147,7 +147,7 @@ const Dashboard = () => {
             </div>
             <div className="money-flow-info">
               <p className="money-flow-label">Expenses</p>
-              <p className="money-flow-value">{formatCurrency(stats?.expenses?.month)}</p>
+              <p className="money-flow-value">{formatCurrency(stats?.expenses?.month?.total)}</p>
             </div>
           </div>
 
@@ -157,7 +157,7 @@ const Dashboard = () => {
             </div>
             <div className="money-flow-info">
               <p className="money-flow-label">Net Cash Flow</p>
-              <p className="money-flow-value">{formatCurrency((stats?.credit?.month || 0) - (stats?.debit?.month || 0) - (stats?.expenses?.month || 0))}</p>
+              <p className="money-flow-value">{formatCurrency((stats?.credit?.month?.total || 0) - (stats?.debit?.month?.total || 0) - (stats?.expenses?.month?.total || 0))}</p>
             </div>
           </div>
         </div>
