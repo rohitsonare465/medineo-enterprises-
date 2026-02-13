@@ -63,7 +63,7 @@ const InvoiceTemplate = forwardRef(({ sale, settings }, ref) => {
   const companyFullAddr = [companyAddr.street || 'Narmadapuram Rd, Danish Nagar', companyAddr.city || 'Bhopal', companyAddr.state || 'Madhya Pradesh', companyAddr.pincode || '462026'].filter(Boolean).join(', ');
 
   return (
-    <div className="inv" ref={ref}>
+    <div className={`inv ${isInterState ? 'inv-inter' : 'inv-intra'}`} ref={ref}>
       {/* Top Thank You Bar */}
       <div className="inv-thankyou">⚠ Thank-you for doing business with us</div>
 
@@ -158,26 +158,26 @@ const InvoiceTemplate = forwardRef(({ sale, settings }, ref) => {
       <table className="inv-table inv-items-table">
         <thead>
           <tr>
-            <th className="col-sr">Sr.<br/>No.</th>
+            <th className="col-sr">Sr.<br />No.</th>
             <th className="col-product">Name of Product</th>
-            <th className="col-batch">Batch<br/>Number</th>
-            <th className="col-exp">Exp<br/>Date</th>
+            <th className="col-batch">Batch<br />Number</th>
+            <th className="col-exp">Exp<br />Date</th>
             <th className="col-hsn">HSN/SAC</th>
             <th className="col-qty">QTY</th>
             <th className="col-unit">Unit</th>
             <th className="col-rate">Rate</th>
-            <th className="col-taxable">Taxable<br/>Value</th>
+            <th className="col-taxable">Taxable<br />Value</th>
             {isInterState ? (
               <>
-                <th className="col-gst-rate">IGST<br/>Rate</th>
-                <th className="col-gst-amt">IGST<br/>Amount</th>
+                <th className="col-gst-rate">IGST<br />Rate</th>
+                <th className="col-gst-amt">IGST<br />Amount</th>
               </>
             ) : (
               <>
-                <th className="col-gst-rate">CGST<br/>Rate</th>
-                <th className="col-gst-amt">CGST<br/>Amount</th>
-                <th className="col-gst-rate">SGST<br/>Rate</th>
-                <th className="col-gst-amt">SGST<br/>Amount</th>
+                <th className="col-gst-rate">CGST<br />Rate</th>
+                <th className="col-gst-amt">CGST<br />Amount</th>
+                <th className="col-gst-rate">SGST<br />Rate</th>
+                <th className="col-gst-amt">SGST<br />Amount</th>
               </>
             )}
             <th className="col-total">Total</th>

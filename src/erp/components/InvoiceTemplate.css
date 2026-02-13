@@ -16,10 +16,21 @@
 }
 
 /* Utility */
-.tc { text-align: center !important; }
-.tl { text-align: left !important; }
-.tr { text-align: right !important; }
-.fw { font-weight: 700 !important; }
+.tc {
+  text-align: center !important;
+}
+
+.tl {
+  text-align: left !important;
+}
+
+.tr {
+  text-align: right !important;
+}
+
+.fw {
+  font-weight: 700 !important;
+}
 
 /* ---- Top Thank You Bar ---- */
 .inv-thankyou {
@@ -221,18 +232,130 @@
 }
 
 /* Column widths - fixed layout */
-.col-sr { width: 3%; }
-.col-product { width: 17%; }
-.col-batch { width: 9%; }
-.col-exp { width: 5%; }
-.col-hsn { width: 7%; }
-.col-qty { width: 4%; }
-.col-unit { width: 4%; }
-.col-rate { width: 7%; }
-.col-taxable { width: 8%; }
-.col-gst-rate { width: 4%; }
-.col-gst-amt { width: 7%; }
-.col-total { width: 9%; }
+/* Column widths - fixed layout */
+.col-sr {
+  width: 4%;
+}
+
+.col-product {
+  width: 20%;
+}
+
+.col-batch {
+  width: 10%;
+}
+
+.col-exp {
+  width: 8%;
+}
+
+.col-hsn {
+  width: 8%;
+}
+
+.col-qty {
+  width: 5%;
+}
+
+.col-unit {
+  width: 4%;
+}
+
+.col-rate {
+  width: 8%;
+}
+
+.col-taxable {
+  width: 9%;
+}
+
+/* GST Columns (Total 11%) - 
+   Inter: IGST Rate (4%) + IGST Amt (7%) = 11%
+   Intra: CGST Rate (3%) + CGST Amt (4%) + SGST Rate (3%) + SGST Amt (4%) = 14% -> adjust to fit
+*/
+/* Re-calibrating for 100% total */
+/* 
+Sr: 3%
+Product: 22%
+Batch: 10%
+Exp: 6%
+HSN: 6%
+Qty: 4%
+Unit: 3%
+Rate: 7%
+Taxable: 8%
+Total: 9%
+Sum so far: 78%
+Remaining for taxes: 22%
+
+Inter-state (2 cols): 
+IGST Rate: 8%
+IGST Amt: 14% -> Total 22%
+
+Intra-state (4 cols):
+CGST Rate: 4%
+CGST Amt: 7%
+SGST Rate: 4%
+SGST Amt: 7% -> Total 22%
+*/
+
+.col-sr {
+  width: 3%;
+}
+
+.col-product {
+  width: 22%;
+}
+
+.col-batch {
+  width: 10%;
+}
+
+.col-exp {
+  width: 6%;
+}
+
+.col-hsn {
+  width: 6%;
+}
+
+.col-qty {
+  width: 4%;
+}
+
+.col-unit {
+  width: 3%;
+}
+
+.col-rate {
+  width: 7%;
+}
+
+.col-taxable {
+  width: 8%;
+}
+
+.col-total {
+  width: 9%;
+}
+
+/* Default (Intra-state) widths for tax columns */
+.col-gst-rate {
+  width: 4%;
+}
+
+.col-gst-amt {
+  width: 7%;
+}
+
+/* Inter-state overrides */
+.inv-inter .col-gst-rate {
+  width: 8% !important;
+}
+
+.inv-inter .col-gst-amt {
+  width: 14% !important;
+}
 
 /* Total row */
 .inv-total-row {
@@ -251,7 +374,7 @@
 }
 
 .inv-words-cell {
-  width: 48%;
+  width: 50%;
   padding: 6px !important;
   font-size: 9px;
   vertical-align: top;
@@ -265,7 +388,7 @@
 }
 
 .inv-summ-label {
-  width: 32%;
+  width: 30%;
   font-size: 9.5px;
   padding: 3px 6px !important;
   text-align: right;
@@ -351,44 +474,57 @@
 .inv-sign-cell {
   width: 50%;
   padding: 8px !important;
-  text-align: center;
-  vertical-align: top;
+  text-align: right;
+  /* Changed from center to right */
+  vertical-align: bottom;
+  /* Ensure it sticks to bottom if cell is tall */
 }
 
 .inv-certified {
   font-size: 9px;
   color: #555;
-  margin: 0 0 4px 0;
+  margin: 0 0 12px 0;
+  /* Added more space */
   font-style: italic;
+  text-align: center;
+  /* Keep this centered or right? Usually centered over signature area */
+  width: 100%;
 }
 
 .inv-for-company {
   font-size: 11px;
-  margin: 0 0 6px 0;
+  margin: 0 0 4px 0;
   color: #000;
+  text-align: right;
+  padding-right: 10px;
 }
 
 .inv-seal-area {
-  text-align: center;
-  margin: 4px 0;
+  text-align: right;
+  margin: 4px 20px 4px 0;
+  height: 60px;
+  /* Force height to reserve space */
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .inv-seal-img {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   object-fit: contain;
-  border-radius: 50%;
   opacity: 0.85;
 }
 
 .inv-auth-sign {
   font-size: 10px;
   font-weight: 600;
-  margin: 4px 0 0 0;
+  margin: 4px 10px 0 0;
   border-top: 1px solid #000;
   padding-top: 4px;
   display: inline-block;
-  min-width: 140px;
+  min-width: 160px;
+  text-align: center;
 }
 
 /* ---- Footer Message ---- */
@@ -405,11 +541,32 @@
 /* ---- Print ---- */
 @media print {
   .inv {
-    padding: 5mm;
+    padding: 0;
+    /* Remove padding for print to maximize space */
     font-size: 9px;
+  }
+
+  /* Ensure background colors print */
+  .inv-title-cell,
+  .inv-label,
+  .inv-party-table th,
+  .inv-items-table thead,
+  .inv-summ-label,
+  .inv-bank-header,
+  .inv-bank-label,
+  .inv-summ-highlight td,
+  .inv-summ-final td,
+  .inv-summ-balance td {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .inv-items-table tbody tr:hover {
     background: none;
+  }
+
+  /* Avoid page breaks inside tables */
+  .inv-table tr {
+    page-break-inside: avoid;
   }
 }
