@@ -8,6 +8,7 @@ import {
     FaPaperPlane
 } from 'react-icons/fa';
 import api from '../services/api';
+import emailjs from '@emailjs/browser';
 import './Contact.css';
 
 function Contact() {
@@ -80,9 +81,22 @@ function Contact() {
         setIsSubmitting(true);
         setSubmitStatus(null);
 
+        const serviceId = process.env.REACT_APP_EMAILJS_SERVICE_ID;
+        const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID;
+        const publicKey = process.env.REACT_APP_EMAILJS_PUBLIC_KEY;
+
+        const templateParams = {
+            from_name: formData.contact_person,
+            from_email: formData.email,
+            organization_name: formData.organization_name,
+            phone: formData.phone,
+            city: formData.city,
+            message: formData.requirement_message,
+        };
+
         try {
-            // Send inquiry to backend API
-            await api.post('/inquiries', {
+            // 1. Send to Backend API (Database)
+            const apiPromise = api.post('/inquiries', {
                 name: formData.contact_person,
                 company: formData.organization_name,
                 phone: formData.phone,
@@ -91,6 +105,18 @@ function Contact() {
                 message: formData.requirement_message,
                 source: 'website'
             });
+
+            // 2. Send to EmailJS (Gmail)
+            // Only attempt if keys are present to avoid errors during development if not set
+            let emailPromise = Promise.resolve();
+            if (serviceId && templateId && publicKey) {
+                emailPromise = emailjs.send(serviceId, templateId, templateParams, publicKey);
+            } else {
+                console.warn('EmailJS keys are missing in .env. Email will not be sent.');
+            }
+
+            // Wait for both
+            await Promise.all([apiPromise, emailPromise]);
 
             setSubmitStatus('success');
             setFormData({
@@ -102,7 +128,7 @@ function Contact() {
                 requirement_message: ''
             });
         } catch (error) {
-            console.error('Inquiry submission error:', error);
+            console.error('Submission error:', error);
             setSubmitStatus('error');
         } finally {
             setIsSubmitting(false);
