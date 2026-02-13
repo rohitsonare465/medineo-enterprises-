@@ -87,7 +87,7 @@ const ReceiptModal = ({ isOpen, onClose, onSuccess }) => {
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-header">
-                    <h2>New Customer Receipt</h2>
+                    <h2>💰 Record Credit (Money In)</h2>
                     <button className="modal-close" onClick={onClose}>
                         <FiX />
                     </button>
@@ -190,7 +190,7 @@ const ReceiptModal = ({ isOpen, onClose, onSuccess }) => {
                             Cancel
                         </button>
                         <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                            {isSubmitting ? 'Creating...' : 'Create Receipt'}
+                            {isSubmitting ? 'Recording...' : 'Record Credit'}
                         </button>
                     </div>
                 </form>

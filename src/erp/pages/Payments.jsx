@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { FiPlus, FiSearch, FiFilter } from 'react-icons/fi';
+import { FiSearch, FiFilter, FiArrowDownCircle, FiArrowUpCircle, FiTrendingUp, FiTrendingDown } from 'react-icons/fi';
 import api from '../../services/api';
 import ReceiptModal from '../components/ReceiptModal';
 import PaymentModal from '../components/PaymentModal';
@@ -7,11 +7,13 @@ import './Payments.css';
 
 const Payments = () => {
   const [payments, setPayments] = useState([]);
+  const [summary, setSummary] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
   const [type, setType] = useState('');
   const [search, setSearch] = useState('');
+  const [paymentMode, setPaymentMode] = useState('');
 
   // Modal states
   const [isReceiptModalOpen, setIsReceiptModalOpen] = useState(false);
@@ -22,6 +24,7 @@ const Payments = () => {
     try {
       const params = new URLSearchParams({ page, limit: 20 });
       if (type) params.append('paymentType', type);
+      if (paymentMode) params.append('paymentMode', paymentMode);
 
       const response = await api.get(`/payments?${params.toString()}`);
       setPayments(response.data.data);
@@ -30,18 +33,28 @@ const Payments = () => {
       console.error('Failed to fetch payments:', error);
     }
     setIsLoading(false);
-  }, [page, type]);
+  }, [page, type, paymentMode]);
+
+  const fetchSummary = useCallback(async () => {
+    try {
+      const response = await api.get('/payments/summary');
+      setSummary(response.data.data);
+    } catch (error) {
+      console.error('Failed to fetch summary:', error);
+    }
+  }, []);
 
   useEffect(() => {
     fetchPaymentsData();
   }, [fetchPaymentsData]);
 
-  const handleReceiptSuccess = () => {
-    fetchPaymentsData();
-  };
+  useEffect(() => {
+    fetchSummary();
+  }, [fetchSummary]);
 
-  const handlePaymentSuccess = () => {
+  const handleSuccess = () => {
     fetchPaymentsData();
+    fetchSummary();
   };
 
   const formatCurrency = (amount) => {
@@ -60,23 +73,68 @@ const Payments = () => {
     });
   };
 
+  const totalIn = summary?.customerReceipts?.total || 0;
+  const totalOut = summary?.vendorPayments?.total || 0;
+  const netBalance = totalIn - totalOut;
+
   return (
     <div className="payments-page">
       <div className="page-header">
         <div>
           <h1 className="page-title">Payments</h1>
-          <p className="page-subtitle">Manage customer receipts and vendor payments</p>
+          <p className="page-subtitle">Track all credit (money in) and debit (money out) records</p>
         </div>
         <div className="header-actions">
-          <button className="btn btn-primary" onClick={() => setIsReceiptModalOpen(true)}>
-            <FiPlus /> New Receipt
+          <button className="btn btn-credit" onClick={() => setIsReceiptModalOpen(true)}>
+            <FiArrowDownCircle /> Credit (Money In)
           </button>
-          <button className="btn btn-secondary" onClick={() => setIsPaymentModalOpen(true)}>
-            <FiPlus /> New Payment
+          <button className="btn btn-debit" onClick={() => setIsPaymentModalOpen(true)}>
+            <FiArrowUpCircle /> Debit (Money Out)
           </button>
         </div>
       </div>
 
+      {/* Summary Cards */}
+      <div className="payment-summary-cards">
+        <div className="summary-card credit-summary">
+          <div className="summary-card-icon credit-icon">
+            <FiTrendingUp />
+          </div>
+          <div className="summary-card-info">
+            <span className="summary-card-label">Total Credit (Money In)</span>
+            <span className="summary-card-value credit-value">{formatCurrency(totalIn)}</span>
+            <span className="summary-card-count">{summary?.customerReceipts?.count || 0} receipts from customers</span>
+          </div>
+        </div>
+
+        <div className="summary-card debit-summary">
+          <div className="summary-card-icon debit-icon">
+            <FiTrendingDown />
+          </div>
+          <div className="summary-card-info">
+            <span className="summary-card-label">Total Debit (Money Out)</span>
+            <span className="summary-card-value debit-value">{formatCurrency(totalOut)}</span>
+            <span className="summary-card-count">{summary?.vendorPayments?.count || 0} payments to vendors</span>
+          </div>
+        </div>
+
+        <div className={`summary-card balance-summary ${netBalance >= 0 ? 'positive' : 'negative'}`}>
+          <div className={`summary-card-icon ${netBalance >= 0 ? 'credit-icon' : 'debit-icon'}`}>
+            {netBalance >= 0 ? <FiTrendingUp /> : <FiTrendingDown />}
+          </div>
+          <div className="summary-card-info">
+            <span className="summary-card-label">Net Balance</span>
+            <span className={`summary-card-value ${netBalance >= 0 ? 'credit-value' : 'debit-value'}`}>
+              {formatCurrency(Math.abs(netBalance))}
+            </span>
+            <span className="summary-card-count">
+              {netBalance >= 0 ? 'Net positive (more inflow)' : 'Net negative (more outflow)'}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Filters */}
       <div className="card filters-card">
         <div className="filters-row">
           <div className="search-box">
@@ -93,61 +151,94 @@ const Payments = () => {
             <FiFilter />
             <select
               value={type}
-              onChange={(e) => setType(e.target.value)}
+              onChange={(e) => { setType(e.target.value); setPage(1); }}
               className="form-input"
             >
-              <option value="">All Types</option>
-              <option value="customer_receipt">Customer Receipts</option>
-              <option value="vendor_payment">Vendor Payments</option>
+              <option value="">All Transactions</option>
+              <option value="customer_receipt">Credit (Money In)</option>
+              <option value="vendor_payment">Debit (Money Out)</option>
+            </select>
+          </div>
+          <div className="filter-group">
+            <select
+              value={paymentMode}
+              onChange={(e) => { setPaymentMode(e.target.value); setPage(1); }}
+              className="form-input"
+            >
+              <option value="">All Modes</option>
+              <option value="Cash">Cash</option>
+              <option value="Bank Transfer">Bank Transfer</option>
+              <option value="RTGS/NEFT">RTGS/NEFT</option>
+              <option value="UPI">UPI</option>
+              <option value="Cheque">Cheque</option>
             </select>
           </div>
         </div>
       </div>
 
+      {/* Payments Table */}
       <div className="card">
         <div className="table-container">
           <table className="data-table">
             <thead>
               <tr>
-                <th>Receipt #</th>
-                <th>Date</th>
-                <th>Type</th>
-                <th>Party</th>
-                <th>Mode</th>
-                <th>Amount</th>
-                <th>Status</th>
+                <th>REF #</th>
+                <th>DATE</th>
+                <th>TYPE</th>
+                <th>PARTY</th>
+                <th>MODE</th>
+                <th>CREDIT (IN)</th>
+                <th>DEBIT (OUT)</th>
+                <th>STATUS</th>
               </tr>
             </thead>
             <tbody>
               {isLoading ? (
                 <tr>
-                  <td colSpan="7" className="text-center">Loading...</td>
+                  <td colSpan="8" className="text-center">Loading...</td>
                 </tr>
               ) : payments.length > 0 ? (
-                payments.map((payment) => (
-                  <tr key={payment._id}>
-                    <td><strong>{payment.paymentNumber}</strong></td>
-                    <td>{formatDate(payment.paymentDate)}</td>
-                    <td>
-                      <span className={`badge badge-${payment.paymentType === 'customer_receipt' ? 'success' : 'info'}`}>
-                        {payment.paymentType === 'customer_receipt' ? 'Receipt' : 'Payment'}
-                      </span>
-                    </td>
-                    <td>{payment.customerName || payment.vendorName}</td>
-                    <td className="capitalize">{payment.paymentMode}</td>
-                    <td className={payment.paymentType === 'customer_receipt' ? 'text-success' : 'text-danger'}>
-                      {formatCurrency(payment.amount)}
-                    </td>
-                    <td>
-                      <span className={`badge badge-${payment.status === 'cleared' ? 'success' : 'warning'}`}>
-                        {payment.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))
+                payments.map((payment) => {
+                  const isCredit = payment.paymentType === 'customer_receipt';
+                  return (
+                    <tr key={payment._id}>
+                      <td><strong>{payment.paymentNumber}</strong></td>
+                      <td>{formatDate(payment.paymentDate)}</td>
+                      <td>
+                        <span className={`type-badge ${isCredit ? 'type-credit' : 'type-debit'}`}>
+                          {isCredit ? (
+                            <><FiArrowDownCircle /> Credit</>
+                          ) : (
+                            <><FiArrowUpCircle /> Debit</>
+                          )}
+                        </span>
+                      </td>
+                      <td>
+                        <div className="party-cell">
+                          <span className="party-name">{payment.customerName || payment.vendorName}</span>
+                          <span className="party-type">{isCredit ? 'Customer' : 'Vendor'}</span>
+                        </div>
+                      </td>
+                      <td className="capitalize">{payment.paymentMode}</td>
+                      <td className="text-success">
+                        {isCredit ? formatCurrency(payment.amount) : '-'}
+                      </td>
+                      <td className="text-danger">
+                        {!isCredit ? formatCurrency(payment.amount) : '-'}
+                      </td>
+                      <td>
+                        <span className={`badge badge-${payment.status === 'cleared' ? 'success' : payment.status === 'bounced' ? 'danger' : 'warning'}`}>
+                          {payment.status}
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })
               ) : (
                 <tr>
-                  <td colSpan="7" className="text-center">No payments found</td>
+                  <td colSpan="8" className="text-center empty-state">
+                    No payment records found. Use the buttons above to record Credit (money in) or Debit (money out).
+                  </td>
                 </tr>
               )}
             </tbody>
@@ -171,12 +262,12 @@ const Payments = () => {
       <ReceiptModal
         isOpen={isReceiptModalOpen}
         onClose={() => setIsReceiptModalOpen(false)}
-        onSuccess={handleReceiptSuccess}
+        onSuccess={handleSuccess}
       />
       <PaymentModal
         isOpen={isPaymentModalOpen}
         onClose={() => setIsPaymentModalOpen(false)}
-        onSuccess={handlePaymentSuccess}
+        onSuccess={handleSuccess}
       />
     </div>
   );

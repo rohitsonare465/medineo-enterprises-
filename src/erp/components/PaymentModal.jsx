@@ -87,7 +87,7 @@ const PaymentModal = ({ isOpen, onClose, onSuccess }) => {
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-content" onClick={(e) => e.stopPropagation()}>
                 <div className="modal-header">
-                    <h2>New Vendor Payment</h2>
+                    <h2>💸 Record Debit (Money Out)</h2>
                     <button className="modal-close" onClick={onClose}>
                         <FiX />
                     </button>
@@ -190,7 +190,7 @@ const PaymentModal = ({ isOpen, onClose, onSuccess }) => {
                             Cancel
                         </button>
                         <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-                            {isSubmitting ? 'Creating...' : 'Create Payment'}
+                            {isSubmitting ? 'Recording...' : 'Record Debit'}
                         </button>
                     </div>
                 </form>
