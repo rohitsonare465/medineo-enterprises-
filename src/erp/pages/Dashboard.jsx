@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   FiShoppingCart, FiTruck, FiDollarSign, FiPackage,
-  FiAlertTriangle, FiTrendingUp, FiClock
+  FiAlertTriangle, FiTrendingUp, FiTrendingDown, FiClock,
+  FiArrowDownCircle, FiArrowUpCircle, FiCreditCard
 } from 'react-icons/fi';
 import useDashboardStore from '../../store/dashboardStore';
 import useAuthStore from '../../store/authStore';
@@ -113,6 +114,52 @@ const Dashboard = () => {
           <p className="stat-label">Today's Receipts</p>
           <p className="stat-value">{formatCurrency(stats?.receipts?.today?.total)}</p>
           <p className="stat-subtext">{stats?.receipts?.today?.count || 0} payments</p>
+        </div>
+      </div>
+
+      {/* Money Flow Section */}
+      <div className="dashboard-section">
+        <h2 className="section-title">💰 Money Flow (This Month)</h2>
+        <div className="money-flow-grid">
+          <div className="money-flow-card credit">
+            <div className="money-flow-icon credit">
+              <FiArrowDownCircle />
+            </div>
+            <div className="money-flow-info">
+              <p className="money-flow-label">Credit (Money In)</p>
+              <p className="money-flow-value">{formatCurrency(stats?.credit?.month)}</p>
+            </div>
+          </div>
+
+          <div className="money-flow-card debit">
+            <div className="money-flow-icon debit">
+              <FiArrowUpCircle />
+            </div>
+            <div className="money-flow-info">
+              <p className="money-flow-label">Debit (Money Out)</p>
+              <p className="money-flow-value">{formatCurrency(stats?.debit?.month)}</p>
+            </div>
+          </div>
+
+          <div className="money-flow-card expense">
+            <div className="money-flow-icon expense">
+              <FiCreditCard />
+            </div>
+            <div className="money-flow-info">
+              <p className="money-flow-label">Expenses</p>
+              <p className="money-flow-value">{formatCurrency(stats?.expenses?.month)}</p>
+            </div>
+          </div>
+
+          <div className="money-flow-card net">
+            <div className="money-flow-icon net">
+              <FiTrendingDown />
+            </div>
+            <div className="money-flow-info">
+              <p className="money-flow-label">Net Cash Flow</p>
+              <p className="money-flow-value">{formatCurrency((stats?.credit?.month || 0) - (stats?.debit?.month || 0) - (stats?.expenses?.month || 0))}</p>
+            </div>
+          </div>
         </div>
       </div>
 

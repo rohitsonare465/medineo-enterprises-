@@ -5,6 +5,7 @@ const Vendor = require('../models/Vendor');
 const Medicine = require('../models/Medicine');
 const Batch = require('../models/Batch');
 const Payment = require('../models/Payment');
+const Expense = require('../models/Expense');
 
 // @desc    Get dashboard stats
 // @route   GET /api/v1/dashboard
@@ -35,7 +36,10 @@ exports.getDashboardStats = async (req, res, next) => {
       todayReceipts,
       todayPayments,
       recentSales,
-      recentPurchases
+      recentPurchases,
+      monthlyCredit,
+      monthlyDebit,
+      monthlyExpenses
     ] = await Promise.all([
       // Today's sales
       Sale.aggregate([
@@ -123,7 +127,25 @@ exports.getDashboardStats = async (req, res, next) => {
         .sort({ createdAt: -1 })
         .limit(5)
         .select('invoiceNumber vendorName grandTotal paymentStatus createdAt')
-        .lean()
+        .lean(),
+
+      // Monthly credit (money in from customers)
+      Payment.aggregate([
+        { $match: { paymentType: 'customer_receipt', paymentDate: { $gte: monthStart }, status: 'cleared' } },
+        { $group: { _id: null, total: { $sum: '$amount' }, count: { $sum: 1 } } }
+      ]),
+
+      // Monthly debit (money out to vendors)
+      Payment.aggregate([
+        { $match: { paymentType: 'vendor_payment', paymentDate: { $gte: monthStart }, status: 'cleared' } },
+        { $group: { _id: null, total: { $sum: '$amount' }, count: { $sum: 1 } } }
+      ]),
+
+      // Monthly expenses
+      Expense.aggregate([
+        { $match: { expenseDate: { $gte: monthStart }, status: { $ne: 'cancelled' } } },
+        { $group: { _id: null, total: { $sum: '$amount' }, count: { $sum: 1 } } }
+      ])
     ]);
 
     res.status(200).json({
@@ -150,6 +172,15 @@ exports.getDashboardStats = async (req, res, next) => {
           lowStock: lowStockCount,
           expiring: expiringCount,
           expired: expiredCount
+        },
+        credit: {
+          month: monthlyCredit[0] || { total: 0, count: 0 }
+        },
+        debit: {
+          month: monthlyDebit[0] || { total: 0, count: 0 }
+        },
+        expenses: {
+          month: monthlyExpenses[0] || { total: 0, count: 0 }
         },
         recentActivity: {
           sales: recentSales,
