@@ -39,11 +39,11 @@ const settingsSchema = new mongoose.Schema({
   
   // Bank Details
   bankDetails: {
-    bankName: String,
-    accountNumber: String,
-    ifscCode: String,
+    bankName: { type: String, default: 'Punjab National Bank' },
+    accountNumber: { type: String, default: '6553002100003380' },
+    ifscCode: { type: String, default: 'PUNB0655300' },
     accountHolderName: String,
-    branchName: String
+    branchName: { type: String, default: 'BHOPAL, HOSANGABAD ROAD' }
   },
   
   // Invoice Settings
