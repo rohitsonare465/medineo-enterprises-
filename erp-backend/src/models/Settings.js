@@ -12,7 +12,8 @@ const settingsSchema = new mongoose.Schema({
   // Legal Details
   gstin: {
     type: String,
-    uppercase: true
+    uppercase: true,
+    default: '23HNCPM6815F1Z2'
   },
   panNumber: {
     type: String,
@@ -60,8 +61,8 @@ const settingsSchema = new mongoose.Schema({
   // GST Settings
   gstSettings: {
     defaultGstRate: { type: Number, default: 12 },
-    stateCode: { type: String, default: '27' },  // Maharashtra
-    stateName: { type: String, default: 'Maharashtra' }
+    stateCode: { type: String, default: '23' },  // Madhya Pradesh
+    stateName: { type: String, default: 'Madhya Pradesh' }
   },
   
   // Stock Settings
