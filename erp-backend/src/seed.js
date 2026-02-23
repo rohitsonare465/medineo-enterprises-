@@ -85,33 +85,34 @@ const seedData = async () => {
     const settings = await Settings.create({
       companyName: 'Medineo Enterprises',
       companyTagline: 'Quality Healthcare Products',
-      email: 'info@medineo.com',
-      phone: '022-12345678',
-      mobile: '9876543210',
+      email: 'medineoenterprises@gmail.com',
+      phone: '7893818387',
       address: {
-        street: '123, Healthcare Complex',
-        city: 'Mumbai',
-        state: 'Maharashtra',
-        pincode: '400001',
+        street: 'Narmadapuram Rd, Danish Nagar',
+        city: 'Bhopal',
+        state: 'Madhya Pradesh',
+        pincode: '462026',
         country: 'India'
       },
-      gstNumber: '27AABCM1234A1ZH',
-      drugLicenseNumber: 'MH-MUM-123456',
-      foodLicenseNumber: 'FSSAI-12345678901234',
-      panNumber: 'AABCM1234A',
-      invoicePrefix: {
-        sale: 'MED',
-        purchase: 'PUR',
-        payment: 'PAY',
-        receipt: 'REC'
+      gstin: '23HNCPM6815F1Z2',
+      panNumber: 'HNCPM6815F',
+      invoiceSettings: {
+        salePrefix: 'INV',
+        purchasePrefix: 'PUR',
+        receiptPrefix: 'REC',
+        paymentPrefix: 'PAY',
+        showBankDetails: true
       },
-      gst: {
-        enabled: true,
-        defaultRate: 12
+      gstSettings: {
+        defaultGstRate: 12,
+        stateCode: '23',
+        stateName: 'Madhya Pradesh'
       },
-      stock: {
+      stockSettings: {
         lowStockThreshold: 50,
-        expiryAlertDays: 90
+        expiryWarningDays: 90,
+        enableBatchTracking: true,
+        enableExpiryTracking: true
       }
     });
 

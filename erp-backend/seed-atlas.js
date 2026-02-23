@@ -65,16 +65,21 @@ async function seedAtlas() {
     if (!existingSettings) {
       await Settings.create({
         companyName: 'Medineo Enterprises',
-        companyAddress: {
-          street: '',
-          city: 'Mumbai',
-          state: 'Maharashtra',
-          pincode: '',
+        address: {
+          street: 'Narmadapuram Rd, Danish Nagar',
+          city: 'Bhopal',
+          state: 'Madhya Pradesh',
+          pincode: '462026',
           country: 'India'
         },
-        companyPhone: '+91-XXXXXXXXXX',
-        companyEmail: 'contact@medineo.in',
-        gstin: '27XXXXX1234X1ZX'
+        phone: '7893818387',
+        email: 'medineoenterprises@gmail.com',
+        gstin: '23HNCPM6815F1Z2',
+        gstSettings: {
+          defaultGstRate: 12,
+          stateCode: '23',
+          stateName: 'Madhya Pradesh'
+        }
       });
       console.log('✅ Default settings created');
     }
