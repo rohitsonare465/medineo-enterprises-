@@ -41,19 +41,22 @@ const InvoicePreview = () => {
     const el = invoiceRef.current;
     // Force a fixed pixel width for consistent PDF rendering
     const originalWidth = el.style.width;
-    el.style.width = '794px';
+    const originalFontSmoothing = el.style.webkitFontSmoothing;
+    el.style.width = '800px';
+    el.style.webkitFontSmoothing = 'antialiased';
 
     const opt = {
-      margin: [5, 5, 5, 5],
+      margin: [4, 4, 4, 4],
       filename: getFileName(),
-      image: { type: 'jpeg', quality: 0.98 },
+      image: { type: 'png', quality: 1.0 },
       html2canvas: {
-        scale: 3,
+        scale: 4,
         useCORS: true,
         letterRendering: true,
         logging: false,
-        width: 794,
-        windowWidth: 794
+        width: 800,
+        windowWidth: 800,
+        backgroundColor: '#ffffff'
       },
       jsPDF: {
         unit: 'mm',
@@ -79,7 +82,7 @@ const InvoicePreview = () => {
       } else if (action === 'share') {
         const pdfBlob = await html2pdf().set(opt).from(invoiceRef.current).output('blob');
         const file = new File([pdfBlob], getFileName(), { type: 'application/pdf' });
-        
+
         if (navigator.share && navigator.canShare({ files: [file] })) {
           await navigator.share({
             title: `Invoice ${sale?.invoiceNumber}`,
@@ -103,6 +106,7 @@ const InvoicePreview = () => {
       toast.error('Failed to generate PDF');
     } finally {
       el.style.width = originalWidth;
+      el.style.webkitFontSmoothing = originalFontSmoothing;
       setDownloading(false);
     }
   };
