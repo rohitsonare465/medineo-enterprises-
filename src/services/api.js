@@ -2,13 +2,29 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api/v1';
 
+// Base URL without /api/v1 for health checks
+const BASE_URL = API_URL.replace(/\/api\/v1\/?$/, '');
+
 const api = axios.create({
   baseURL: API_URL,
-  timeout: 30000, // 30s timeout for Render free tier cold starts
+  timeout: 60000, // 60s timeout for Render free tier cold starts
   headers: {
     'Content-Type': 'application/json'
   }
 });
+
+// Server warm-up: ping health endpoint to wake Render free tier
+let serverReady = false;
+let warmupPromise = null;
+
+export const warmUpServer = () => {
+  if (serverReady || warmupPromise) return warmupPromise;
+  warmupPromise = axios.get(`${BASE_URL}/health`, { timeout: 60000 })
+    .then(() => { serverReady = true; })
+    .catch(() => { /* server may still wake up on actual requests */ })
+    .finally(() => { warmupPromise = null; });
+  return warmupPromise;
+};
 
 // Request interceptor to add auth token
 api.interceptors.request.use(

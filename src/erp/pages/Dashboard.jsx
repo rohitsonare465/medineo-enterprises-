@@ -7,13 +7,15 @@ import {
 } from 'react-icons/fi';
 import useDashboardStore from '../../store/dashboardStore';
 import useAuthStore from '../../store/authStore';
+import { warmUpServer } from '../../services/api';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const { stats, isLoading, error, fetchDashboardStats } = useDashboardStore();
+  const { stats, isLoading, error, serverWaking, fetchDashboardStats } = useDashboardStore();
   const { user } = useAuthStore();
 
   useEffect(() => {
+    warmUpServer();
     fetchDashboardStats();
   }, [fetchDashboardStats]);
 
@@ -29,7 +31,7 @@ const Dashboard = () => {
     return (
       <div className="dashboard-loading">
         <div className="loader"></div>
-        <p>Loading dashboard...</p>
+        <p>{serverWaking ? 'Server is waking up, retrying automatically...' : 'Loading dashboard...'}</p>
       </div>
     );
   }
