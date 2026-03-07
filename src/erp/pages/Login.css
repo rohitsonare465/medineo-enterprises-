@@ -99,8 +99,12 @@
   font-size: 1.125rem;
 }
 
-.form-input.with-icon {
+.login-form .form-input.with-icon {
   padding-left: 2.75rem;
+}
+
+.login-form .form-input.with-password-toggle {
+  padding-right: 2.75rem;
 }
 
 .login-form .form-input {
@@ -185,7 +189,7 @@
   .login-left {
     display: none;
   }
-  
+
   .login-right {
     padding: 2rem;
   }

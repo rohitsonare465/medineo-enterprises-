@@ -14,14 +14,14 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!email || !password) {
       toast.error('Please enter email and password');
       return;
     }
 
     const result = await login(email, password);
-    
+
     if (result.success) {
       toast.success('Login successful!');
       navigate('/erp');
@@ -46,7 +46,7 @@ const Login = () => {
             </ul>
           </div>
         </div>
-        
+
         <div className="login-right">
           <div className="login-form-container">
             <h2>Welcome Back</h2>
@@ -74,7 +74,7 @@ const Login = () => {
                   <FiLock className="input-icon" />
                   <input
                     type={showPassword ? 'text' : 'password'}
-                    className="form-input with-icon"
+                    className="form-input with-icon with-password-toggle"
                     placeholder="Enter your password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -93,8 +93,8 @@ const Login = () => {
                 <div className="error-message">{error}</div>
               )}
 
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 className="login-btn"
                 disabled={isLoading}
               >
