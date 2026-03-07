@@ -71,7 +71,7 @@ async function seedAtlas() {
           state: 'Madhya Pradesh',
           pincode: '462026',
           country: 'India'
-        },
+        },3
         phone: '7893818387',
         email: 'medineoenterprises@gmail.com',
         gstin: '23HNCPM6815F1Z2',
