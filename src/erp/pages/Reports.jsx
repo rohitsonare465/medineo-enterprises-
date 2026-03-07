@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FiDownload, FiCalendar } from 'react-icons/fi';
+import { writeFile, utils as xlsxUtils } from 'xlsx';
 import api from '../../services/api';
 import './Reports.css';
 
@@ -38,6 +39,138 @@ const Reports = () => {
       currency: 'INR',
       maximumFractionDigits: 0
     }).format(amount || 0);
+  };
+
+  const exportToExcel = () => {
+    if (!reportData) return;
+
+    let wsTemplate = [];
+    const reportNameMap = {
+      sales: 'Sales_Report',
+      purchases: 'Purchase_Report',
+      gst: 'GST_Report',
+      payments: 'Payment_Report',
+      profit: 'Profit_Report'
+    };
+
+    const fileName = `${reportNameMap[activeReport]}_${dateRange.startDate}_to_${dateRange.endDate}.xlsx`;
+
+    switch (activeReport) {
+      case 'sales':
+        wsTemplate.push(['Sales Summary']);
+        wsTemplate.push(['Total Sales', 'Total Amount', 'Total GST', 'Pending Amount']);
+        wsTemplate.push([
+          reportData.summary?.totalSales || 0,
+          reportData.summary?.totalAmount || 0,
+          reportData.summary?.totalGst || 0,
+          reportData.summary?.totalPending || 0
+        ]);
+
+        if (reportData.customerWise?.length > 0) {
+          wsTemplate.push([]);
+          wsTemplate.push(['Customer-wise Summary']);
+          wsTemplate.push(['Customer', 'Invoices', 'Amount', 'Received', 'Pending']);
+          reportData.customerWise.forEach(item => {
+            wsTemplate.push([
+              item.customerName,
+              item.count,
+              item.amount,
+              item.received,
+              item.pending
+            ]);
+          });
+        }
+        break;
+
+      case 'purchases':
+        wsTemplate.push(['Purchase Summary']);
+        wsTemplate.push(['Total Purchases', 'Total Amount', 'Total GST', 'Pending Amount']);
+        wsTemplate.push([
+          reportData.summary?.totalPurchases || 0,
+          reportData.summary?.totalAmount || 0,
+          reportData.summary?.totalGst || 0,
+          reportData.summary?.totalPending || 0
+        ]);
+
+        if (reportData.vendorWise?.length > 0) {
+          wsTemplate.push([]);
+          wsTemplate.push(['Vendor-wise Summary']);
+          wsTemplate.push(['Vendor', 'Purchases', 'Amount', 'Paid', 'Pending']);
+          reportData.vendorWise.forEach(item => {
+            wsTemplate.push([
+              item.vendorName,
+              item.count,
+              item.amount,
+              item.paid,
+              item.pending
+            ]);
+          });
+        }
+        break;
+
+      case 'gst':
+        wsTemplate.push(['GST Summary']);
+        wsTemplate.push([]);
+
+        wsTemplate.push(['Output GST (Sales)']);
+        wsTemplate.push(['CGST', 'SGST', 'IGST', 'Total']);
+        wsTemplate.push([
+          reportData.salesGst?.cgst || 0,
+          reportData.salesGst?.sgst || 0,
+          reportData.salesGst?.igst || 0,
+          reportData.salesGst?.total || 0
+        ]);
+
+        wsTemplate.push([]);
+        wsTemplate.push(['Input GST (Purchases)']);
+        wsTemplate.push(['CGST', 'SGST', 'IGST', 'Total']);
+        wsTemplate.push([
+          reportData.purchaseGst?.cgst || 0,
+          reportData.purchaseGst?.sgst || 0,
+          reportData.purchaseGst?.igst || 0,
+          reportData.purchaseGst?.total || 0
+        ]);
+
+        wsTemplate.push([]);
+        wsTemplate.push(['Net GST Payable']);
+        wsTemplate.push(['CGST', 'SGST', 'IGST', 'Total']);
+        wsTemplate.push([
+          reportData.netPayable?.cgst || 0,
+          reportData.netPayable?.sgst || 0,
+          reportData.netPayable?.igst || 0,
+          reportData.netPayable?.total || 0
+        ]);
+        break;
+
+      case 'profit':
+        wsTemplate.push(['Profit & Loss Summary']);
+        wsTemplate.push(['Metric', 'Amount (₹)']);
+        wsTemplate.push(['Revenue', reportData.revenue || 0]);
+        wsTemplate.push(['Cost of Goods', reportData.costOfGoods || 0]);
+        wsTemplate.push(['Gross Profit', reportData.grossProfit || 0]);
+        wsTemplate.push(['Gross Margin (%)', reportData.grossProfitMargin || 0]);
+        break;
+
+      case 'payments':
+        wsTemplate.push(['Payments Summary']);
+        wsTemplate.push(['Type', 'Total Amount', 'Transactions']);
+        reportData.summary?.forEach(item => {
+          wsTemplate.push([
+            item._id === 'customer_receipt' ? 'Customer Receipts' : 'Vendor Payments',
+            item.total,
+            item.count
+          ]);
+        });
+        break;
+
+      default:
+        break;
+    }
+
+    const wb = xlsxUtils.book_new();
+    const ws = xlsxUtils.aoa_to_sheet(wsTemplate);
+    xlsxUtils.book_append_sheet(wb, ws, 'Report');
+    writeFile(wb, fileName);
   };
 
   const renderSalesReport = () => (
@@ -213,7 +346,7 @@ const Reports = () => {
                 type="date"
                 className="form-input"
                 value={dateRange.startDate}
-                onChange={(e) => setDateRange({...dateRange, startDate: e.target.value})}
+                onChange={(e) => setDateRange({ ...dateRange, startDate: e.target.value })}
               />
             </div>
             <div className="form-group">
@@ -222,7 +355,7 @@ const Reports = () => {
                 type="date"
                 className="form-input"
                 value={dateRange.endDate}
-                onChange={(e) => setDateRange({...dateRange, endDate: e.target.value})}
+                onChange={(e) => setDateRange({ ...dateRange, endDate: e.target.value })}
               />
             </div>
             <button className="btn btn-primary" onClick={generateReport} disabled={isLoading}>
@@ -235,7 +368,7 @@ const Reports = () => {
           <div className="report-header">
             <h3>{reports.find(r => r.id === activeReport)?.label}</h3>
             {reportData && (
-              <button className="btn btn-secondary">
+              <button className="btn btn-secondary" onClick={exportToExcel}>
                 <FiDownload /> Export
               </button>
             )}
