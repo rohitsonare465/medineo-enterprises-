@@ -297,5 +297,7 @@ saleSchema.index({ saleDate: -1 });
 saleSchema.index({ paymentStatus: 1 });
 saleSchema.index({ status: 1 });
 saleSchema.index({ createdBy: 1 });
+// Dashboard optimized: status + saleDate for filtered aggregations
+saleSchema.index({ status: 1, saleDate: -1, grandTotal: 1 });
 
 module.exports = mongoose.model('Sale', saleSchema);

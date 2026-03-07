@@ -143,6 +143,8 @@ expenseSchema.index({ category: 1 });
 expenseSchema.index({ status: 1 });
 expenseSchema.index({ paymentMode: 1 });
 expenseSchema.index({ createdBy: 1 });
+// Dashboard optimized: status + date for filtered aggregations
+expenseSchema.index({ status: 1, expenseDate: -1, amount: 1 });
 expenseSchema.index({ title: 'text', description: 'text', paidTo: 'text' });
 
 module.exports = mongoose.model('Expense', expenseSchema);

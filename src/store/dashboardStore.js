@@ -12,10 +12,13 @@ const useDashboardStore = create((set) => ({
   fetchDashboardStats: async () => {
     set({ isLoading: true, error: null });
     try {
-      const response = await api.get('/dashboard');
+      const response = await api.get('/dashboard', { timeout: 15000 });
       set({ stats: response.data.data, isLoading: false });
     } catch (error) {
-      set({ error: error.response?.data?.message || 'Failed to fetch dashboard', isLoading: false });
+      const message = error.code === 'ECONNABORTED'
+        ? 'Server is waking up, please retry in a few seconds'
+        : error.response?.data?.message || 'Failed to fetch dashboard';
+      set({ error: message, isLoading: false });
     }
   },
 

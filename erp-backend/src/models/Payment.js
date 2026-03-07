@@ -143,5 +143,7 @@ paymentSchema.index({ vendor: 1, paymentDate: -1 });
 paymentSchema.index({ paymentDate: -1 });
 paymentSchema.index({ status: 1 });
 paymentSchema.index({ paymentMode: 1 });
+// Dashboard optimized: type + status + date for filtered aggregations
+paymentSchema.index({ paymentType: 1, status: 1, paymentDate: -1, amount: 1 });
 
 module.exports = mongoose.model('Payment', paymentSchema);

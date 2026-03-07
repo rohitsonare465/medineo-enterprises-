@@ -10,7 +10,7 @@ import useAuthStore from '../../store/authStore';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const { stats, isLoading, fetchDashboardStats } = useDashboardStore();
+  const { stats, isLoading, error, fetchDashboardStats } = useDashboardStore();
   const { user } = useAuthStore();
 
   useEffect(() => {
@@ -25,11 +25,22 @@ const Dashboard = () => {
     }).format(amount || 0);
   };
 
-  if (isLoading) {
+  if (isLoading && !stats) {
     return (
       <div className="dashboard-loading">
         <div className="loader"></div>
         <p>Loading dashboard...</p>
+      </div>
+    );
+  }
+
+  if (error && !stats) {
+    return (
+      <div className="dashboard-loading">
+        <p style={{ color: '#ef4444', marginBottom: '1rem' }}>{error}</p>
+        <button className="btn btn-primary" onClick={fetchDashboardStats}>
+          Retry
+        </button>
       </div>
     );
   }

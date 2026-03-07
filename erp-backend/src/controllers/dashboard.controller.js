@@ -7,11 +7,20 @@ const Batch = require('../models/Batch');
 const Payment = require('../models/Payment');
 const Expense = require('../models/Expense');
 
+// Simple in-memory cache for dashboard stats
+let dashboardCache = { data: null, timestamp: 0 };
+const CACHE_TTL = 60 * 1000; // 60 seconds
+
 // @desc    Get dashboard stats
 // @route   GET /api/v1/dashboard
 // @access  Private
 exports.getDashboardStats = async (req, res, next) => {
   try {
+    // Return cached data if fresh
+    if (dashboardCache.data && (Date.now() - dashboardCache.timestamp) < CACHE_TTL) {
+      return res.status(200).json({ success: true, data: dashboardCache.data });
+    }
+
     // Date ranges
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -83,11 +92,12 @@ exports.getDashboardStats = async (req, res, next) => {
         { $group: { _id: null, total: { $sum: '$outstandingBalance' } } }
       ]),
       
-      // Low stock count
+      // Low stock count (using find + cursor count to leverage index)
       Medicine.countDocuments({
         isActive: true,
+        currentStock: { $gte: 0 },
         $expr: { $lt: ['$currentStock', '$minStockLevel'] }
-      }),
+      }).hint({ isActive: 1, currentStock: 1 }),
       
       // Expiring in 90 days
       Batch.countDocuments({
@@ -113,17 +123,15 @@ exports.getDashboardStats = async (req, res, next) => {
         { $group: { _id: null, total: { $sum: '$amount' }, count: { $sum: 1 } } }
       ]),
       
-      // Recent sales
+      // Recent sales (use customerName instead of populate to avoid extra DB call)
       Sale.find({ status: { $ne: 'cancelled' } })
-        .populate('customer', 'name')
         .sort({ createdAt: -1 })
         .limit(5)
         .select('invoiceNumber customerName grandTotal paymentStatus createdAt')
         .lean(),
       
-      // Recent purchases
+      // Recent purchases (use vendorName instead of populate to avoid extra DB call)
       Purchase.find({ status: 'confirmed' })
-        .populate('vendor', 'name')
         .sort({ createdAt: -1 })
         .limit(5)
         .select('invoiceNumber vendorName grandTotal paymentStatus createdAt')
@@ -148,9 +156,7 @@ exports.getDashboardStats = async (req, res, next) => {
       ])
     ]);
 
-    res.status(200).json({
-      success: true,
-      data: {
+    const responseData = {
         sales: {
           today: todaySales[0] || { total: 0, count: 0 },
           month: monthSales[0] || { total: 0, count: 0 },
@@ -186,7 +192,14 @@ exports.getDashboardStats = async (req, res, next) => {
           sales: recentSales,
           purchases: recentPurchases
         }
-      }
+    };
+
+    // Update cache
+    dashboardCache = { data: responseData, timestamp: Date.now() };
+
+    res.status(200).json({
+      success: true,
+      data: responseData
     });
   } catch (error) {
     next(error);

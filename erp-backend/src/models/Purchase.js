@@ -296,5 +296,7 @@ purchaseSchema.index({ purchaseDate: -1 });
 purchaseSchema.index({ paymentStatus: 1 });
 purchaseSchema.index({ status: 1 });
 purchaseSchema.index({ vendorInvoiceNumber: 1 });
+// Dashboard optimized: status + purchaseDate for filtered aggregations
+purchaseSchema.index({ status: 1, purchaseDate: -1, grandTotal: 1 });
 
 module.exports = mongoose.model('Purchase', purchaseSchema);
