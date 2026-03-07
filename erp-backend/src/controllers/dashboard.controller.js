@@ -92,12 +92,12 @@ exports.getDashboardStats = async (req, res, next) => {
         { $group: { _id: null, total: { $sum: '$outstandingBalance' } } }
       ]),
       
-      // Low stock count (using find + cursor count to leverage index)
+      // Low stock count
       Medicine.countDocuments({
         isActive: true,
         currentStock: { $gte: 0 },
         $expr: { $lt: ['$currentStock', '$minStockLevel'] }
-      }).hint({ isActive: 1, currentStock: 1 }),
+      }),
       
       // Expiring in 90 days
       Batch.countDocuments({
