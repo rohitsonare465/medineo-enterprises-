@@ -8,7 +8,7 @@
   --theme-4: #fbf7f1;
   --theme-5: #e7dfd4;
   --theme-6: #2f8a86;
-  --white: #ffffff;
+  --white: #FEFEFE;
   --black: #000000;
   --shadow-soft: 0 10px 30px rgba(20, 16, 12, 0.12);
   --shadow-card: 0 6px 18px rgba(16, 12, 8, 0.12);
@@ -119,7 +119,7 @@ img {
   color: var(--white);
 }
 
-.guten-P6sVWZ > .guten-background-overlay {
+.guten-P6sVWZ>.guten-background-overlay {
   background: linear-gradient(120deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.05));
 }
 
@@ -277,7 +277,7 @@ img {
   background: var(--theme-4);
 }
 
-.guten-byxivr > .guten-background-overlay {
+.guten-byxivr>.guten-background-overlay {
   background-image: url('https://aayudhresearch.com/wp-content/uploads/2025/08/Hands.webp');
   background-size: cover;
   background-repeat: no-repeat;
@@ -292,7 +292,7 @@ img {
   color: var(--white);
 }
 
-.guten-7VMORB > .guten-background-overlay {
+.guten-7VMORB>.guten-background-overlay {
   background: linear-gradient(300deg, rgba(196, 76, 43, 0.95) 40%, rgba(0, 0, 0, 0.65) 100%);
   opacity: 0.8;
 }

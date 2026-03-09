@@ -8,7 +8,7 @@
 .erp-sidebar {
   width: 260px;
   background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
-  color: #fff;
+  color: #FEFEFE;
   display: flex;
   flex-direction: column;
   transition: width 0.3s ease;
@@ -40,7 +40,7 @@
 .sidebar-toggle {
   background: transparent;
   border: none;
-  color: #fff;
+  color: #FEFEFE;
   cursor: pointer;
   padding: 0.5rem;
   display: flex;
@@ -75,7 +75,7 @@
 
 .nav-item:hover {
   background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  color: #FEFEFE;
 }
 
 .nav-item.active {
@@ -177,7 +177,7 @@
 
 .user-menu button:hover {
   background: rgba(255, 255, 255, 0.1);
-  color: #fff;
+  color: #FEFEFE;
 }
 
 /* Main Content */
@@ -216,7 +216,7 @@
 
 /* Cards */
 .card {
-  background: #fff;
+  background: #FEFEFE;
   border-radius: 0.75rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   padding: 1.25rem;
@@ -245,7 +245,7 @@
 }
 
 .stat-card {
-  background: #fff;
+  background: #FEFEFE;
   border-radius: 0.75rem;
   padding: 1.25rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
@@ -352,7 +352,7 @@
 
 .btn-danger {
   background: #ef4444;
-  color: #fff;
+  color: #FEFEFE;
 }
 
 .btn-danger:hover {

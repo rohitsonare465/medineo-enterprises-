@@ -19,7 +19,7 @@
 
 .login-branding {
   max-width: 400px;
-  color: #fff;
+  color: #FEFEFE;
 }
 
 .login-branding h1 {
@@ -54,7 +54,7 @@
   align-items: center;
   justify-content: center;
   padding: 3rem;
-  background: #fff;
+  background: #FEFEFE;
 }
 
 .login-form-container {

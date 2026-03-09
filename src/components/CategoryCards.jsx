@@ -15,7 +15,7 @@ const categoryData = [
         title: 'Medicines',
         description: 'Pharmaceutical products including tablets, capsules, injectables, and syrups from certified manufacturers.',
         icon: FaPills,
-        color: '#C41E3A'
+        color: '#A41E1E'
     },
     {
         id: 'surgical',
@@ -36,7 +36,7 @@ const categoryData = [
         title: 'Healthcare Supplies',
         description: 'General healthcare products including sanitizers, thermometers, BP monitors, and institutional supplies.',
         icon: FaHeartbeat,
-        color: '#C41E3A'
+        color: '#A41E1E'
     }
 ];
 

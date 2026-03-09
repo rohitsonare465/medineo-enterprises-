@@ -11,9 +11,16 @@
   font-family: Arial, Helvetica, sans-serif;
   font-size: 10px;
   color: #000;
-  background: #fff;
+  background: #FEFEFE;
   line-height: 1.35;
   box-sizing: border-box;
+}
+
+/* Base formatting for html2pdf specifically */
+.pdf-mode.inv {
+  width: 210mm;
+  padding: 10mm;
+  font-size: 11px;
 }
 
 .inv * {
@@ -220,7 +227,7 @@
   padding: 3px 2px !important;
   white-space: normal;
   overflow: hidden;
-  word-break: break-word;
+  word-break: break-all;
   color: #000;
 }
 
@@ -228,6 +235,12 @@
   padding: 3px 3px !important;
   font-size: 10px;
   overflow: hidden;
+  word-break: break-all;
+}
+
+.pdf-mode .inv-items-table td,
+.pdf-mode .inv-items-table th {
+  font-size: 9px;
   word-break: break-word;
 }
 
@@ -365,7 +378,7 @@
 }
 
 .inv-summ-balance td {
-  background: #fff3e0 !important;
+  background: #fefefe !important;
   font-size: 10px !important;
 }
 

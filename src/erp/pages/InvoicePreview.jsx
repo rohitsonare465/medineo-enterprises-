@@ -42,21 +42,22 @@ const InvoicePreview = () => {
     // Force a fixed pixel width for consistent PDF rendering
     const originalWidth = el.style.width;
     const originalFontSmoothing = el.style.webkitFontSmoothing;
-    el.style.width = '800px';
+    el.style.width = '210mm';
     el.style.webkitFontSmoothing = 'antialiased';
 
+    // Add pdf mode class temporarily to apply specific pdf CSS rules
+    el.classList.add('pdf-mode');
+
     const opt = {
-      margin: [4, 4, 4, 4],
+      margin: 0,
       filename: getFileName(),
-      image: { type: 'png', quality: 1.0 },
+      image: { type: 'jpeg', quality: 1.0 },
       html2canvas: {
-        scale: 4,
+        scale: 2,
         useCORS: true,
         letterRendering: true,
         logging: false,
-        width: 800,
-        windowWidth: 800,
-        backgroundColor: '#ffffff'
+        backgroundColor: '#FEFEFEfff'
       },
       jsPDF: {
         unit: 'mm',
@@ -105,6 +106,7 @@ const InvoicePreview = () => {
       console.error('PDF generation failed:', error);
       toast.error('Failed to generate PDF');
     } finally {
+      el.classList.remove('pdf-mode');
       el.style.width = originalWidth;
       el.style.webkitFontSmoothing = originalFontSmoothing;
       setDownloading(false);

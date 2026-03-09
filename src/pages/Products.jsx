@@ -16,7 +16,7 @@ const productsData = [
         title: 'Medicines',
         description: 'Comprehensive range of pharmaceutical products from certified manufacturers with complete documentation and batch verification.',
         icon: FaPills,
-        color: '#C41E3A',
+        color: '#A41E1E',
         features: [
             'Tablets & Capsules',
             'Injectable Solutions',
@@ -58,7 +58,7 @@ const productsData = [
         title: 'Healthcare Supplies',
         description: 'General healthcare products and institutional care supplies to support comprehensive patient care and facility operations.',
         icon: FaHeartbeat,
-        color: '#C41E3A',
+        color: '#A41E1E',
         features: [
             'Sanitizers & Disinfectants',
             'Thermometers',

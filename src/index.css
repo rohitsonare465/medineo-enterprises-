@@ -1,9 +1,9 @@
 :root {
   /* Colors */
-  --color-white: #FFFFFF;
+  --color-white: #FEFEFE;
   --color-off-white: #F8F9FA;
-  --color-medical-red: #C41E3A;
-  --color-medical-red-dark: #A31830;
+  --color-medical-red: #A41E1E;
+  --color-medical-red-dark: #8A1919;
   --color-trust-green: #2E8B57;
   --color-trust-green-light: #E8F5EC;
   --color-black: #1A1A1A;
@@ -70,7 +70,9 @@
 }
 
 /* Reset and Base Styles */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -90,7 +92,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-heading);
   color: var(--color-black);
   line-height: 1.2;
@@ -133,7 +140,8 @@ img {
   display: block;
 }
 
-ul, ol {
+ul,
+ol {
   list-style: none;
 }
 
@@ -144,7 +152,9 @@ button {
   background: none;
 }
 
-input, textarea, select {
+input,
+textarea,
+select {
   font-family: inherit;
   font-size: inherit;
 }
@@ -242,11 +252,11 @@ input, textarea, select {
   h1 {
     font-size: var(--text-4xl);
   }
-  
+
   h2 {
     font-size: var(--text-3xl);
   }
-  
+
   h3 {
     font-size: var(--text-xl);
   }
@@ -260,7 +270,7 @@ input, textarea, select {
   h1 {
     font-size: var(--text-3xl);
   }
-  
+
   h2 {
     font-size: var(--text-2xl);
   }

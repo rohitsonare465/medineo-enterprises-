@@ -46,13 +46,13 @@ function App() {
   return (
     <Router>
       <ScrollToTop />
-      <Toaster 
+      <Toaster
         position="top-right"
         toastOptions={{
           duration: 4000,
           style: {
             background: '#333',
-            color: '#fff',
+            color: '#FEFEFE',
           },
         }}
       />
