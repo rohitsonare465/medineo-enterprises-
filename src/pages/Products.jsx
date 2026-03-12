@@ -6,7 +6,8 @@ import {
     FaBandAid,
     FaHeartbeat,
     FaArrowRight,
-    FaCheck
+    FaCheck,
+    FaHeart
 } from 'react-icons/fa';
 import './Products.css';
 
@@ -32,12 +33,13 @@ const productsData = [
         icon: FaSyringe,
         color: '#2E8B57',
         features: [
-            'Surgical Instruments',
-            'Sutures & Blades',
-            'Surgical Gloves',
-            'OT Supplies',
-            'Sterilization Products'
-        ]
+            'Cutting & Grasping Instruments',
+            'Hemostatic & Suturing Tools',
+            'Retractors & Electrosurgical',
+            'Specialized OT Equipment',
+            'Surgical Consumables'
+        ],
+        link: '/products/surgical'
     },
     {
         id: 'consumables',
@@ -66,6 +68,21 @@ const productsData = [
             'Diagnostic Supplies',
             'Institutional Care Items'
         ]
+    },
+    {
+        id: 'cardiac',
+        title: 'Cardiac Products',
+        description: 'Complete range of cardiac catheterization and intervention supplies including catheters, balloons, sheaths, guide wires, and accessories.',
+        icon: FaHeart,
+        color: '#C41E3A',
+        features: [
+            'Guiding & Diagnostic Catheters',
+            'PTCA Balloons (SC & NC)',
+            'Sheaths & Guide Wires',
+            'Drape Sheets & Trays',
+            'Cardiac Accessories'
+        ],
+        link: '/products/cardiac'
     }
 ];
 
@@ -114,8 +131,8 @@ function Products() {
                                             </li>
                                         ))}
                                     </ul>
-                                    <Link to="/contact" className="btn btn-primary product-cta">
-                                        Send Inquiry for {product.title}
+                                    <Link to={product.link || '/contact'} className="btn btn-primary product-cta">
+                                        {product.link ? `View All ${product.title}` : `Send Inquiry for ${product.title}`}
                                         <FaArrowRight />
                                     </Link>
                                 </div>

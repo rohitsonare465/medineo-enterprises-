@@ -5,6 +5,7 @@ import {
     FaSyringe,
     FaBandAid,
     FaHeartbeat,
+    FaHeart,
     FaArrowRight
 } from 'react-icons/fa';
 import './CategoryCard.css';
@@ -22,7 +23,8 @@ const categoryData = [
         title: 'Surgical Items',
         description: 'Surgical instruments, sutures, blades, gloves, and operation theatre supplies for healthcare facilities.',
         icon: FaSyringe,
-        color: '#2E8B57'
+        color: '#2E8B57',
+        link: '/products/surgical'
     },
     {
         id: 'consumables',
@@ -37,6 +39,14 @@ const categoryData = [
         description: 'General healthcare products including sanitizers, thermometers, BP monitors, and institutional supplies.',
         icon: FaHeartbeat,
         color: '#A41E1E'
+    },
+    {
+        id: 'cardiac',
+        title: 'Cardiac Products',
+        description: 'Cardiac catheterization & intervention supplies — catheters, PTCA balloons, sheaths, guide wires, and more.',
+        icon: FaHeart,
+        color: '#C41E3A',
+        link: '/products/cardiac'
     }
 ];
 
@@ -61,8 +71,8 @@ function CategoryCards() {
                                 </div>
                                 <h3 className="category-title">{category.title}</h3>
                                 <p className="category-description">{category.description}</p>
-                                <Link to="/contact" className="category-link">
-                                    Send Inquiry
+                                <Link to={category.link || '/contact'} className="category-link">
+                                    {category.link ? 'View Products' : 'Send Inquiry'}
                                     <FaArrowRight />
                                 </Link>
                             </div>

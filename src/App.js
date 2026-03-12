@@ -10,6 +10,8 @@ import PublicLayout from './layouts/PublicLayout';
 import Home from './pages/Home';
 import About from './pages/About';
 import Products from './pages/Products';
+import CardiacProducts from './pages/CardiacProducts';
+import SurgicalProducts from './pages/SurgicalProducts';
 import Contact from './pages/Contact';
 import WhyChooseUs from './pages/WhyChooseUs';
 
@@ -62,6 +64,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/products" element={<Products />} />
+          <Route path="/products/cardiac" element={<CardiacProducts />} />
+          <Route path="/products/surgical" element={<SurgicalProducts />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/why-choose-us" element={<WhyChooseUs />} />
         </Route>

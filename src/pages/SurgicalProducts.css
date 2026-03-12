@@ -1,0 +1,234 @@
+.surgical-page {
+    padding-top: 80px;
+}
+
+/* Header */
+.surgical-header {
+    background: linear-gradient(135deg, #F0FFF4 0%, #C6F6D5 100%);
+    padding: var(--spacing-8) 0 var(--spacing-10);
+}
+
+.surgical-header .back-link:hover {
+    color: var(--color-trust-green);
+}
+
+.surgical-header-content {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-5);
+    margin-bottom: var(--spacing-4);
+}
+
+.surgical-icon-wrapper {
+    width: 72px;
+    height: 72px;
+    border-radius: var(--radius-lg);
+    background-color: rgba(46, 139, 87, 0.1);
+    color: var(--color-trust-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.surgical-header-content h1 {
+    font-size: var(--text-4xl);
+    margin: 0 0 var(--spacing-1) 0;
+}
+
+.surgical-header-content p {
+    font-size: var(--text-lg);
+    color: var(--color-charcoal);
+    margin: 0;
+}
+
+.surgical-stats {
+    display: flex;
+    gap: var(--spacing-5);
+}
+
+.surgical-stats span {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-trust-green);
+    background: rgba(46, 139, 87, 0.08);
+    padding: var(--spacing-1) var(--spacing-3);
+    border-radius: var(--radius-full);
+}
+
+/* Search */
+.surgical-search-section {
+    padding: var(--spacing-6) 0 0;
+}
+
+.surgical-search-bar {
+    position: relative;
+    max-width: 600px;
+}
+
+.surgical-search-bar .search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-medium-gray);
+    font-size: var(--text-base);
+}
+
+.surgical-search-bar input {
+    width: 100%;
+    padding: 14px 16px 14px 44px;
+    border: 1px solid var(--color-light-gray);
+    border-radius: var(--radius-lg);
+    font-size: var(--text-base);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base);
+    background: var(--color-white);
+}
+
+.surgical-search-bar input:focus {
+    outline: none;
+    border-color: var(--color-trust-green);
+    box-shadow: 0 0 0 3px rgba(46, 139, 87, 0.1);
+}
+
+/* Product Groups */
+.surgical-product-group {
+    margin-bottom: var(--spacing-10);
+}
+
+.surgical-group-header {
+    margin-bottom: var(--spacing-4);
+}
+
+.surgical-group-title {
+    font-size: var(--text-xl);
+    color: var(--color-black);
+    margin-bottom: var(--spacing-1);
+    padding-bottom: var(--spacing-2);
+    border-bottom: 2px solid var(--color-trust-green);
+    display: inline-block;
+}
+
+.surgical-group-desc {
+    display: block;
+    font-size: var(--text-sm);
+    color: var(--color-medium-gray);
+    margin-top: var(--spacing-1);
+}
+
+.surgical-items-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-4);
+}
+
+/* Product Card */
+.surgical-product-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--color-white);
+    border: 1px solid var(--color-light-gray);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-4) var(--spacing-5);
+    transition: all var(--transition-base);
+}
+
+.surgical-product-card:hover {
+    box-shadow: var(--shadow-md);
+    border-color: rgba(46, 139, 87, 0.25);
+}
+
+.surgical-product-info h3 {
+    font-size: var(--text-base);
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: var(--color-black);
+}
+
+.surgical-product-spec {
+    font-size: var(--text-sm);
+    color: var(--color-medium-gray);
+}
+
+.surgical-inquiry-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-trust-green);
+    background: rgba(46, 139, 87, 0.06);
+    padding: 8px 16px;
+    border-radius: var(--radius-md);
+    white-space: nowrap;
+    transition: all var(--transition-base);
+}
+
+.surgical-inquiry-btn:hover {
+    background: var(--color-trust-green);
+    color: var(--color-white);
+}
+
+/* No results */
+.surgical-page .no-results {
+    text-align: center;
+    padding: var(--spacing-12) 0;
+    color: var(--color-charcoal);
+    font-size: var(--text-lg);
+}
+
+/* CTA */
+.surgical-cta-content {
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.surgical-cta-content h2 {
+    margin-bottom: var(--spacing-3);
+}
+
+.surgical-cta-content p {
+    font-size: var(--text-lg);
+    color: var(--color-charcoal);
+    margin-bottom: var(--spacing-6);
+    line-height: 1.7;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .surgical-page {
+        padding-top: 70px;
+    }
+
+    .surgical-header {
+        padding: var(--spacing-6) 0 var(--spacing-8);
+    }
+
+    .surgical-header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-3);
+    }
+
+    .surgical-header-content h1 {
+        font-size: var(--text-2xl);
+    }
+
+    .surgical-items-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .surgical-product-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-3);
+    }
+
+    .surgical-inquiry-btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

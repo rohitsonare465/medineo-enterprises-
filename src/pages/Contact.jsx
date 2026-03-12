@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
     FaPhone,
     FaEnvelope,
@@ -12,6 +13,8 @@ import emailjs from '@emailjs/browser';
 import './Contact.css';
 
 function Contact() {
+    const [searchParams] = useSearchParams();
+
     const [formData, setFormData] = useState({
         organization_name: '',
         contact_person: '',
@@ -20,6 +23,16 @@ function Contact() {
         city: '',
         requirement_message: ''
     });
+
+    useEffect(() => {
+        const product = searchParams.get('product');
+        if (product) {
+            setFormData(prev => ({
+                ...prev,
+                requirement_message: `Inquiry for: ${product}\n\n`
+            }));
+        }
+    }, [searchParams]);
 
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
