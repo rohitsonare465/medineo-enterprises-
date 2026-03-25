@@ -65,6 +65,13 @@ const NewPurchase = () => {
   };
 
   const addMedicine = (medicine) => {
+    // Check if medicine already exists in items
+    const medicineExists = items.some(item => item.medicine === medicine._id);
+    if (medicineExists) {
+      toast.error(`${medicine.name} is already added. Update the quantity or batch instead.`);
+      return;
+    }
+
     const newItem = {
       medicine: medicine._id,
       medicineName: medicine.name,

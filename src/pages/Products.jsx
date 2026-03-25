@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
     FaPills,
@@ -7,7 +7,8 @@ import {
     FaHeartbeat,
     FaArrowRight,
     FaCheck,
-    FaHeart
+    FaHeart,
+    FaSearch
 } from 'react-icons/fa';
 import './Products.css';
 
@@ -87,6 +88,17 @@ const productsData = [
 ];
 
 function Products() {
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const filteredProducts = productsData.filter((product) => {
+        const query = searchQuery.toLowerCase();
+        return (
+            product.title.toLowerCase().includes(query) ||
+            product.description.toLowerCase().includes(query) ||
+            product.features.some(f => f.toLowerCase().includes(query))
+        );
+    });
+
     return (
         <div className="products-page">
             {/* Page Header */}
@@ -94,6 +106,21 @@ function Products() {
                 <div className="container">
                     <h1>Our Product Categories</h1>
                     <p>Comprehensive range of medical products for healthcare institutions</p>
+                </div>
+            </section>
+
+            {/* Search Bar */}
+            <section className="products-search-section">
+                <div className="container">
+                    <div className="products-search-bar">
+                        <FaSearch className="search-icon" />
+                        <input
+                            type="text"
+                            placeholder="Search products... (e.g., Medicines, Surgical, Cardiac, Syringes)"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
+                    </div>
                 </div>
             </section>
 
@@ -108,8 +135,13 @@ function Products() {
                         </p>
                     </div>
 
+                    {filteredProducts.length === 0 ? (
+                        <div className="no-results">
+                            <p>No product categories found matching "{searchQuery}"</p>
+                        </div>
+                    ) : (
                     <div className="products-grid">
-                        {productsData.map((product) => {
+                        {filteredProducts.map((product) => {
                             const IconComponent = product.icon;
                             return (
                                 <div key={product.id} className="product-card">
@@ -139,6 +171,7 @@ function Products() {
                             );
                         })}
                     </div>
+                    )}
                 </div>
             </section>
 
