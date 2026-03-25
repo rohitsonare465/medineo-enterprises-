@@ -98,6 +98,16 @@ exports.createPurchase = async (req, res, next) => {
       return res.status(404).json({
         success: false,
         message: 'Vendor not found'
+          // Check for duplicate medicines in items
+          const medicineIds = items.map(item => item.medicine);
+          const uniqueMedicineIds = new Set(medicineIds);
+          if (medicineIds.length !== uniqueMedicineIds.size) {
+            return res.status(400).json({
+              success: false,
+              message: 'Duplicate medicine found in items. Each medicine can only be added once per purchase.'
+            });
+          }
+
       });
     }
 
