@@ -209,7 +209,7 @@ const InvoiceTemplate = forwardRef(({ sale, settings }, ref) => {
                   <td className="tc">{item.gstRate / 2}%</td>
                   <td className="tr">{cur(item.sgstAmount)}</td>
                 </>
-              )}
+            )}
               <td className="tr fw">₹ {cur(item.totalAmount)}</td>
             </tr>
           ))}

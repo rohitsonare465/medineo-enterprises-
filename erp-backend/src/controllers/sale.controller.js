@@ -30,6 +30,15 @@ exports.getSales = async (req, res, next) => {
       query.paymentStatus = req.query.paymentStatus;
     }
 
+    if (req.query.search?.trim()) {
+      const escapedSearch = req.query.search.trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const searchRegex = new RegExp(escapedSearch, 'i');
+      query.$or = [
+        { invoiceNumber: searchRegex },
+        { customerName: searchRegex }
+      ];
+    }
+
     if (req.query.startDate && req.query.endDate) {
       query.saleDate = {
         $gte: new Date(req.query.startDate),

@@ -63,7 +63,7 @@ const Sales = () => {
             <option value="">All Status</option>
             <option value="paid">Paid</option>
             <option value="partial">Partial</option>
-            <option value="pending">Pending</option>
+            <option value="unpaid">Pending</option>
           </select>
         </div>
       </div>
