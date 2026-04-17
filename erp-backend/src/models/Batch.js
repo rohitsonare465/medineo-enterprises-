@@ -11,9 +11,10 @@ const batchSchema = new mongoose.Schema({
   // Batch Details
   batchNumber: {
     type: String,
-    required: [true, 'Batch number is required'],
+    required: false,
     trim: true,
-    uppercase: true
+    uppercase: true,
+    default: ''
   },
   
   // Dates
@@ -22,7 +23,7 @@ const batchSchema = new mongoose.Schema({
   },
   expiryDate: {
     type: Date,
-    required: [true, 'Expiry date is required']
+    required: false
   },
   
   // Pricing for this batch
@@ -95,6 +96,15 @@ const batchSchema = new mongoose.Schema({
   }
 }, {
   timestamps: true
+});
+
+// Auto-generate batch number if not provided
+batchSchema.pre('validate', function(next) {
+  if (!this.batchNumber || this.batchNumber.trim() === '') {
+    // Generate a unique batch number using timestamp + random
+    this.batchNumber = 'AUTO-' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2, 5).toUpperCase();
+  }
+  next();
 });
 
 // Compound unique index for medicine + batch number

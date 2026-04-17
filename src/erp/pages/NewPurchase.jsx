@@ -144,13 +144,7 @@ const NewPurchase = () => {
       return;
     }
 
-    // Validate items
-    for (const item of items) {
-      if (!item.batchNumber || !item.expiryDate) {
-        toast.error('Please fill batch number and expiry for all items');
-        return;
-      }
-    }
+    // Batch number and expiry are optional — save even without them
 
     setIsSubmitting(true);
     const purchaseData = {

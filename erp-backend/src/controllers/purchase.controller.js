@@ -170,7 +170,7 @@ exports.createPurchase = async (req, res, next) => {
       // Create batch
       const batch = await Batch.create({
         medicine: item.medicine,
-        batchNumber: item.batchNumber.toUpperCase(),
+        batchNumber: item.batchNumber ? item.batchNumber.toUpperCase() : '',
         manufacturingDate: item.manufacturingDate,
         expiryDate: item.expiryDate,
         purchasePrice: item.purchasePrice,
@@ -188,7 +188,7 @@ exports.createPurchase = async (req, res, next) => {
         medicine: item.medicine,
         medicineName: medicine.name,
         medicineCode: medicine.code,
-        batchNumber: item.batchNumber.toUpperCase(),
+        batchNumber: item.batchNumber ? item.batchNumber.toUpperCase() : '',
         expiryDate: item.expiryDate,
         manufacturingDate: item.manufacturingDate,
         quantity: item.quantity,

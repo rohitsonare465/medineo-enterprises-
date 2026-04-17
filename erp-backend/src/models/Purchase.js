@@ -14,12 +14,12 @@ const purchaseItemSchema = new mongoose.Schema({
   // Batch Info
   batchNumber: {
     type: String,
-    required: true,
+    required: false,
     uppercase: true
   },
   expiryDate: {
     type: Date,
-    required: true
+    required: false
   },
   manufacturingDate: Date,
   
