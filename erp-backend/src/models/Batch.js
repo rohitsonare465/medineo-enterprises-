@@ -154,7 +154,11 @@ batchSchema.statics.getBatchesForSelling = async function(medicineId, requiredQt
     medicine: medicineId,
     quantity: { $gt: 0 },
     isExpired: false,
-    expiryDate: { $gt: new Date() }
+    $or: [
+      { expiryDate: { $gt: new Date() } },
+      { expiryDate: null },
+      { expiryDate: { $exists: false } }
+    ]
   })
   .sort({ expiryDate: 1, createdAt: 1 }) // FIFO: oldest expiry first
   .lean();

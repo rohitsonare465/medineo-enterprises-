@@ -260,7 +260,11 @@ exports.searchForBilling = async (req, res, next) => {
       medicine: { $in: medicineIds },
       quantity: { $gt: 0 },
       isExpired: false,
-      expiryDate: { $gt: new Date() }
+      $or: [
+        { expiryDate: { $gt: new Date() } },
+        { expiryDate: null },
+        { expiryDate: { $exists: false } }
+      ]
     })
     .sort({ expiryDate: 1 })
     .lean();
