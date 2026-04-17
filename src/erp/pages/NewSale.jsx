@@ -78,7 +78,7 @@ const NewSale = () => {
         medicineName: medicine.name,
         medicineCode: medicine.code,
         batch: batch._id,
-        batchNumber: batch.batchNumber,
+        batchNumber: batch.batchNumber?.startsWith('AUTO-') ? '-' : batch.batchNumber,
         expiryDate: batch.expiryDate,
         quantity: 1,
         availableQty: batch.quantity,
@@ -308,7 +308,7 @@ const NewSale = () => {
                           className="batch-item"
                           onClick={() => addMedicine(medicine, batch)}
                         >
-                          <span>Batch: {batch.batchNumber}</span>
+                          <span>Batch: {batch.batchNumber?.startsWith('AUTO-') ? '-' : batch.batchNumber}</span>
                           <span>Exp: {formatDate(batch.expiryDate)}</span>
                           <span>Stock: {batch.quantity}</span>
                           <span>MRP: ₹{batch.mrp}</span>
@@ -355,7 +355,7 @@ const NewSale = () => {
                       <div className="item-name">{item.medicineName}</div>
                       <div className="item-code">{item.medicineCode}</div>
                     </td>
-                    <td>{item.batchNumber}</td>
+                    <td>{item.batchNumber?.startsWith('AUTO-') ? '-' : item.batchNumber}</td>
                     <td>{formatDate(item.expiryDate)}</td>
                     <td>
                       <input

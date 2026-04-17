@@ -188,7 +188,7 @@ const InvoiceTemplate = forwardRef(({ sale, settings }, ref) => {
             <tr key={item._id || i}>
               <td className="tc">{i + 1}</td>
               <td className="tl">{item.medicineName || item.medicine?.name || '-'}</td>
-              <td className="tc">{item.batchNumber || '-'}</td>
+              <td className="tc">{item.batchNumber?.startsWith('AUTO-') ? '-' : (item.batchNumber || '-')}</td>
               <td className="tc">
                 {item.expiryDate ? new Date(item.expiryDate).toLocaleDateString('en-IN', { month: '2-digit', year: 'numeric' }) : '-'}
               </td>

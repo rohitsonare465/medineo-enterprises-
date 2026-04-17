@@ -145,7 +145,7 @@ const Stock = () => {
                 {data.length > 0 ? data.map((item, index) => (
                   <tr key={index}>
                     <td>{item.medicineName}</td>
-                    <td>{item.batchNumber}</td>
+                    <td>{item.batchNumber?.startsWith('AUTO-') ? '-' : item.batchNumber}</td>
                     <td>{formatDate(item.expiryDate)}</td>
                     <td>{item.quantity}</td>
                     <td>
