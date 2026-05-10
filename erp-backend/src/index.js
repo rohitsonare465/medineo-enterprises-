@@ -26,6 +26,7 @@ const reportRoutes = require('./routes/report.routes');
 const inquiryRoutes = require('./routes/inquiry.routes');
 const settingsRoutes = require('./routes/settings.routes');
 const expenseRoutes = require('./routes/expense.routes');
+const creditNoteRoutes = require('./routes/creditNote.routes');
 
 const app = express();
 app.set('trust proxy', 1); // Trust Render proxy
@@ -122,6 +123,7 @@ app.use(`${API_PREFIX}/reports`, reportRoutes);
 app.use(`${API_PREFIX}/inquiries`, inquiryRoutes);
 app.use(`${API_PREFIX}/settings`, settingsRoutes);
 app.use(`${API_PREFIX}/expenses`, expenseRoutes);
+app.use(`${API_PREFIX}/credit-notes`, creditNoteRoutes);
 
 // 404 Handler
 app.use((req, res) => {

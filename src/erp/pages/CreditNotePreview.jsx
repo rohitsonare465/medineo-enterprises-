@@ -1,44 +1,46 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { FiArrowLeft, FiDownload, FiPrinter, FiShare2, FiFileText } from 'react-icons/fi';
+import { FiArrowLeft, FiDownload, FiPrinter, FiShare2 } from 'react-icons/fi';
 import html2pdf from 'html2pdf.js';
 import toast from 'react-hot-toast';
 import InvoiceTemplate from '../components/InvoiceTemplate';
-import useSaleStore from '../../store/saleStore';
 import api from '../../services/api';
 import './InvoicePreview.css';
 
-const InvoicePreview = () => {
+const CreditNotePreview = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const invoiceRef = useRef();
-  const { sale, isLoading, fetchSale } = useSaleStore();
+  
+  const [creditNote, setCreditNote] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [settings, setSettings] = useState(null);
   const [downloading, setDownloading] = useState(false);
-  const [creditNotes, setCreditNotes] = useState([]);
-  const [generatingCN, setGeneratingCN] = useState(false);
 
   useEffect(() => {
-    if (id) {
-      fetchSale(id);
-      // Fetch company settings
-      api.get('/settings').then(res => {
-        setSettings(res.data.data);
-      }).catch(err => {
-        console.error('Failed to fetch settings:', err);
-      });
-      // Fetch credit notes
-      api.get(`/credit-notes?originalInvoice=${id}`).then(res => {
-        setCreditNotes(res.data.data);
-      }).catch(err => {
-        console.error('Failed to fetch credit notes:', err);
-      });
-    }
-  }, [id, fetchSale]);
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        if (id) {
+          const res = await api.get(`/credit-notes/${id}`);
+          setCreditNote(res.data.data);
+          
+          const settingsRes = await api.get('/settings');
+          setSettings(settingsRes.data.data);
+        }
+      } catch (error) {
+        console.error('Failed to fetch credit note or settings:', error);
+        toast.error('Failed to load Credit Note details');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [id]);
 
   const getFileName = () => {
-    const customerCode = sale?.customer?.code || sale?.customerName?.replace(/\s+/g, '-') || 'Customer';
-    const invoiceNum = sale?.invoiceNumber?.replace(/\//g, '-') || 'Invoice';
+    const customerCode = creditNote?.customer?.code || creditNote?.customerName?.replace(/\s+/g, '-') || 'Customer';
+    const invoiceNum = creditNote?.creditNoteNumber?.replace(/\//g, '-') || 'CreditNote';
     return `${invoiceNum}-${customerCode}-${Date.now()}.pdf`;
   };
 
@@ -78,7 +80,7 @@ const InvoicePreview = () => {
     try {
       if (action === 'download') {
         await html2pdf().set(opt).from(invoiceRef.current).save();
-        toast.success('Invoice downloaded successfully!');
+        toast.success('Credit Note downloaded successfully!');
       } else if (action === 'print') {
         const pdfBlob = await html2pdf().set(opt).from(invoiceRef.current).output('blob');
         const blobUrl = URL.createObjectURL(pdfBlob);
@@ -94,20 +96,19 @@ const InvoicePreview = () => {
 
         if (navigator.share && navigator.canShare({ files: [file] })) {
           await navigator.share({
-            title: `Invoice ${sale?.invoiceNumber}`,
-            text: `Invoice from ${settings?.companyName || 'Medineo Enterprises'}`,
+            title: `Credit Note ${creditNote?.creditNoteNumber}`,
+            text: `Credit Note from ${settings?.companyName || 'Medineo Enterprises'}`,
             files: [file]
           });
-          toast.success('Invoice shared!');
+          toast.success('Credit Note shared!');
         } else {
-          // Fallback: download if sharing not supported
           const url = URL.createObjectURL(pdfBlob);
           const a = document.createElement('a');
           a.href = url;
           a.download = getFileName();
           a.click();
           URL.revokeObjectURL(url);
-          toast.success('Invoice downloaded (sharing not supported on this device)');
+          toast.success('Credit Note downloaded (sharing not supported on this device)');
         }
       }
     } catch (error) {
@@ -121,29 +122,12 @@ const InvoicePreview = () => {
     }
   };
 
-  const handleGenerateCreditNote = async () => {
-    if (!sale) return;
-    try {
-      setGeneratingCN(true);
-      const res = await api.post('/credit-notes', { originalInvoiceId: sale._id });
-      if (res.data.success) {
-        toast.success('Credit Note generated successfully!');
-        navigate(`/erp/credit-notes/${res.data.data._id}/preview`);
-      }
-    } catch (error) {
-      console.error('Error generating credit note:', error);
-      toast.error(error.response?.data?.message || 'Failed to generate Credit Note');
-    } finally {
-      setGeneratingCN(false);
-    }
-  };
-
-  if (isLoading || !sale) {
+  if (isLoading || !creditNote) {
     return (
       <div className="invoice-preview-page">
         <div className="invoice-loading">
           <div className="loader"></div>
-          <p>Loading invoice...</p>
+          <p>Loading credit note...</p>
         </div>
       </div>
     );
@@ -158,33 +142,11 @@ const InvoicePreview = () => {
             <FiArrowLeft /> Back
           </button>
           <div className="toolbar-info">
-            <h2>Invoice {sale?.invoiceNumber}</h2>
-            <span className="toolbar-customer">{sale?.customerName}</span>
-            {creditNotes.length > 0 && (
-              <span className="badge badge-warning" style={{ marginLeft: '10px', fontSize: '0.8rem', padding: '2px 8px', borderRadius: '12px', background: '#fef08a', color: '#854d0e', border: '1px solid #fde047' }}>
-                Credit Note Exists
-              </span>
-            )}
+            <h2>Credit Note {creditNote?.creditNoteNumber}</h2>
+            <span className="toolbar-customer">{creditNote?.customerName}</span>
           </div>
         </div>
         <div className="toolbar-actions">
-          {creditNotes.map(cn => (
-            <button
-              key={cn._id}
-              className="btn btn-outline"
-              onClick={() => navigate(`/erp/credit-notes/${cn._id}/preview`)}
-            >
-              <FiFileText /> View {cn.creditNoteNumber}
-            </button>
-          ))}
-          <button
-            className="btn btn-outline"
-            onClick={handleGenerateCreditNote}
-            disabled={generatingCN}
-            style={{ borderColor: '#ef4444', color: '#ef4444' }}
-          >
-            <FiFileText /> {generatingCN ? 'Generating...' : 'Generate Credit Note'}
-          </button>
           <button
             className="btn btn-outline"
             onClick={() => generatePDF('print')}
@@ -212,11 +174,11 @@ const InvoicePreview = () => {
       {/* Invoice Preview */}
       <div className="invoice-preview-container">
         <div className="invoice-paper">
-          <InvoiceTemplate ref={invoiceRef} sale={sale} settings={settings} />
+          <InvoiceTemplate ref={invoiceRef} sale={creditNote} settings={settings} isCreditNote={true} />
         </div>
       </div>
     </div>
   );
 };
 
-export default InvoicePreview;
+export default CreditNotePreview;

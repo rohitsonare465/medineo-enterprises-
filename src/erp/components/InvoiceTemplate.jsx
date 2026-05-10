@@ -32,7 +32,7 @@ const BANK_DEFAULTS = {
   branchName: 'BHOPAL, HOSANGABAD ROAD'
 };
 
-const InvoiceTemplate = forwardRef(({ sale, settings }, ref) => {
+const InvoiceTemplate = forwardRef(({ sale, settings, isCreditNote = false }, ref) => {
   const fmt = (date) => {
     if (!date) return '-';
     return new Date(date).toLocaleDateString('en-IN', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -89,10 +89,12 @@ const InvoiceTemplate = forwardRef(({ sale, settings }, ref) => {
         <tbody>
           <tr>
             <td className="inv-title-cell">
-              <strong className="inv-title-text">TAX INVOICE</strong>
+              <strong className="inv-title-text">
+                {isCreditNote ? 'CREDIT NOTE' : 'TAX INVOICE'}
+              </strong>
             </td>
             <td className="inv-title-right">
-              {sale?.invoiceType === 'return' ? 'Credit Note' : 'Original For Recipient'}
+              {isCreditNote ? 'Credit for Return/Adjustment' : (sale?.invoiceType === 'return' ? 'Credit Note' : 'Original For Recipient')}
             </td>
           </tr>
         </tbody>
@@ -102,16 +104,16 @@ const InvoiceTemplate = forwardRef(({ sale, settings }, ref) => {
       <table className="inv-table inv-details-table">
         <tbody>
           <tr>
-            <td className="inv-label">Invoice Number</td>
-            <td className="inv-value">{sale?.invoiceNumber || '-'}</td>
+            <td className="inv-label">{isCreditNote ? 'Credit Note Number' : 'Invoice Number'}</td>
+            <td className="inv-value">{isCreditNote ? (sale?.creditNoteNumber || '-') : (sale?.invoiceNumber || '-')}</td>
             <td className="inv-label">Description</td>
             <td className="inv-value inv-desc-value">{description}</td>
           </tr>
           <tr>
-            <td className="inv-label">Invoice Date</td>
-            <td className="inv-value">{fmt(sale?.saleDate)}</td>
-            <td className="inv-label"></td>
-            <td className="inv-value"></td>
+            <td className="inv-label">{isCreditNote ? 'Credit Note Date' : 'Invoice Date'}</td>
+            <td className="inv-value">{fmt(isCreditNote ? (sale?.date || sale?.saleDate) : sale?.saleDate)}</td>
+            <td className="inv-label">{isCreditNote ? 'Against Invoice No' : ''}</td>
+            <td className="inv-value">{isCreditNote ? (sale?.originalInvoiceNumber || '-') : ''}</td>
           </tr>
           <tr>
             <td className="inv-label">State</td>

@@ -72,10 +72,23 @@ api.interceptors.response.use(
 
           originalRequest.headers.Authorization = `Bearer ${token}`;
           return api(originalRequest);
+        } else {
+          // No refresh token available, must log out
+          throw new Error('No refresh token available');
         }
       } catch (refreshError) {
+        // Clear tokens and auth state
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
+        
+        // Use auth store to clear persistent state to avoid redirect loops
+        const authStore = JSON.parse(localStorage.getItem('auth-storage') || '{}');
+        if (authStore.state) {
+          authStore.state.isAuthenticated = false;
+          authStore.state.user = null;
+          localStorage.setItem('auth-storage', JSON.stringify(authStore));
+        }
+        
         window.location.href = '/erp/login';
         return Promise.reject(refreshError);
       }

@@ -12,6 +12,7 @@ const dashboardRoutes = require('./dashboard.routes');
 const reportRoutes = require('./report.routes');
 const inquiryRoutes = require('./inquiry.routes');
 const settingsRoutes = require('./settings.routes');
+const creditNoteRoutes = require('./creditNote.routes');
 
 module.exports = {
   authRoutes,
@@ -27,5 +28,6 @@ module.exports = {
   dashboardRoutes,
   reportRoutes,
   inquiryRoutes,
-  settingsRoutes
+  settingsRoutes,
+  creditNoteRoutes
 };
