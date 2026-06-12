@@ -1,0 +1,175 @@
+.pi-document {
+  background: #fff;
+  color: #111827;
+  font-size: 12px;
+  line-height: 1.35;
+}
+
+.pi-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.45rem 0.75rem;
+  border-bottom: 1px solid #d1d5db;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.pi-topbar-text,
+.pi-topbar-ref {
+  font-size: 0.72rem;
+}
+
+.pi-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.pi-table th,
+.pi-table td {
+  border: 1px solid #1f2937;
+  padding: 0.45rem 0.55rem;
+  vertical-align: top;
+}
+
+.pi-header-table td {
+  border-left: none;
+  border-right: none;
+}
+
+.pi-brand {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.pi-logo {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+}
+
+.pi-company-name {
+  margin: 0;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.pi-company-addr,
+.pi-company-contact {
+  margin: 0.1rem 0;
+  font-size: 0.78rem;
+}
+
+.pi-doc-cell {
+  width: 30%;
+}
+
+.pi-meta-grid {
+  display: grid;
+  gap: 0.6rem;
+}
+
+.pi-meta-grid span {
+  display: block;
+  font-size: 0.72rem;
+  color: #4b5563;
+  text-transform: uppercase;
+}
+
+.pi-terms-table td,
+.pi-address-table td,
+.pi-address-table th {
+  border-left: 1px solid #1f2937;
+  border-right: 1px solid #1f2937;
+}
+
+.pi-terms-cell {
+  font-size: 0.8rem;
+}
+
+.pi-terms-cell p {
+  margin: 0.15rem 0 0.45rem;
+}
+
+.pi-address-cell {
+  width: 50%;
+}
+
+.pi-address-cell p {
+  margin: 0.08rem 0;
+}
+
+.pi-items-table th {
+  background: #f8fafc;
+  text-transform: uppercase;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+}
+
+.pi-empty {
+  text-align: center;
+  color: #6b7280;
+}
+
+.pi-empty-row td {
+  height: 24px;
+}
+
+.pi-total-label,
+.pi-total-value {
+  font-weight: 700;
+}
+
+.pi-summary-table td {
+  border-top: none;
+}
+
+.pi-words-cell {
+  width: 55%;
+}
+
+.pi-words-cell p {
+  margin: 0.25rem 0 0;
+  font-style: italic;
+}
+
+.pi-summary-label {
+  width: 20%;
+  font-weight: 600;
+}
+
+.pi-summary-final {
+  background: #ecfdf5;
+}
+
+.pi-bank-header {
+  font-weight: 700;
+  background: #f8fafc;
+}
+
+.pi-bank-label {
+  width: 35%;
+  font-weight: 600;
+}
+
+.pi-footer-table td {
+  vertical-align: middle;
+}
+
+.pi-terms-column {
+  width: 58%;
+}
+
+.pi-sign-column {
+  text-align: center;
+}
+
+.pi-seal {
+  display: block;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  margin: 0.5rem auto;
+}

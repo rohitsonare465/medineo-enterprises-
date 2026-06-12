@@ -9,6 +9,8 @@ export { default as Vendors } from './Vendors';
 export { default as Medicines } from './Medicines';
 export { default as Stock } from './Stock';
 export { default as Payments } from './Payments';
+export { default as ProformaInvoice } from './ProformaInvoice';
+export { default as CreditNotes } from './CreditNotes';
 export { default as Ledger } from './Ledger';
 export { default as Reports } from './Reports';
 export { default as Settings } from './Settings';

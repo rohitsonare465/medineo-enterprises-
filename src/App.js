@@ -28,6 +28,8 @@ import Medicines from './erp/pages/Medicines';
 import Stock from './erp/pages/Stock';
 import Payments from './erp/pages/Payments';
 import Expenses from './erp/pages/Expenses';
+import ProformaInvoice from './erp/pages/ProformaInvoice';
+import CreditNotes from './erp/pages/CreditNotes';
 import InvoicePreview from './erp/pages/InvoicePreview';
 import CreditNotePreview from './erp/pages/CreditNotePreview';
 import Ledger from './erp/pages/Ledger';
@@ -92,6 +94,8 @@ function App() {
             <Route path="stock" element={<Stock />} />
             <Route path="payments" element={<Payments />} />
             <Route path="expenses" element={<Expenses />} />
+            <Route path="proforma-invoice" element={<ProformaInvoice />} />
+            <Route path="credit-notes" element={<CreditNotes />} />
             <Route path="ledger" element={<Ledger />} />
             <Route path="reports" element={<Reports />} />
             <Route path="settings" element={<Settings />} />

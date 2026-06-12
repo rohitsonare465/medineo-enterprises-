@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 import { 
   FiHome, FiShoppingCart, FiTruck, FiUsers, FiPackage, 
-  FiDollarSign, FiBookOpen, FiBarChart2, FiSettings,
+  FiDollarSign, FiBookOpen, FiBarChart2, FiSettings, FiFileText,
   FiMenu, FiX, FiLogOut, FiUser, FiChevronDown, FiCreditCard
 } from 'react-icons/fi';
 import useAuthStore from '../../store/authStore';
@@ -30,6 +30,8 @@ const ERPLayout = () => {
     { path: '/erp/stock', icon: FiPackage, label: 'Stock', permission: 'canManageStock' },
     { path: '/erp/payments', icon: FiDollarSign, label: 'Payments', permission: 'canManagePayments' },
     { path: '/erp/expenses', icon: FiCreditCard, label: 'Expenses', permission: 'canManagePayments' },
+    { path: '/erp/proforma-invoice', icon: FiFileText, label: 'Proforma Invoice', permission: 'canManagePurchases' },
+    { path: '/erp/credit-notes', icon: FiFileText, label: 'Credit Notes', permission: 'canManageSales' },
     { path: '/erp/ledger', icon: FiBookOpen, label: 'Ledger', permission: 'canViewReports' },
     { path: '/erp/reports', icon: FiBarChart2, label: 'Reports', permission: 'canViewReports' },
     { path: '/erp/settings', icon: FiSettings, label: 'Settings', permission: 'canManageSettings' }

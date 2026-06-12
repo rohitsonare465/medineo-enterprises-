@@ -1,0 +1,169 @@
+.proforma-page {
+  min-height: 100vh;
+}
+
+.proforma-page-header {
+  align-items: flex-start;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.proforma-layout {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 1rem;
+}
+
+.proforma-editor,
+.proforma-preview-card {
+  min-width: 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.section-header.compact {
+  margin-bottom: 0.75rem;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #1a1a2e;
+}
+
+.section-hint {
+  display: block;
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+}
+
+.editor-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.25rem 0;
+}
+
+.two-col {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.pi-inline-input {
+  min-width: 140px;
+}
+
+.pi-editor-table-container {
+  border: 1px solid #eef2f7;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.pi-editor-table .form-input {
+  padding: 0.55rem 0.75rem;
+}
+
+.pi-remove-btn {
+  color: #dc2626;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.pi-summary-card {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.08), rgba(34, 197, 94, 0.03));
+  border: 1px solid rgba(74, 222, 128, 0.18);
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.pi-summary-card span {
+  display: block;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+.pi-summary-card strong {
+  display: block;
+  font-size: 1rem;
+  color: #1a1a2e;
+  margin-top: 0.25rem;
+}
+
+.pi-paper-wrap {
+  background: #f3f4f6;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  overflow: auto;
+}
+
+.pi-document {
+  width: 210mm;
+  min-height: 297mm;
+  margin: 0 auto;
+}
+
+.pi-document .tc {
+  text-align: center;
+}
+
+.pi-document .tr {
+  text-align: right;
+}
+
+.pi-document .fw {
+  font-weight: 700;
+}
+
+.pdf-mode {
+  box-shadow: none !important;
+}
+
+@media (max-width: 1280px) {
+  .proforma-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .editor-split,
+  .two-col,
+  .pi-summary-card {
+    grid-template-columns: 1fr;
+  }
+
+  .header-actions {
+    width: 100%;
+  }
+}
+
+@media print {
+  .proforma-editor,
+  .proforma-page-header {
+    display: none !important;
+  }
+
+  .proforma-preview-card {
+    padding: 0;
+    box-shadow: none;
+  }
+
+  .pi-paper-wrap {
+    padding: 0;
+    background: #ffffff;
+  }
+}
