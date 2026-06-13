@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api/v1';
+const API_URL = process.env.REACT_APP_API_URL || 'https://api.medineo.com/v1';
 
 // Base URL without /api/v1 for health checks
 const BASE_URL = API_URL.replace(/\/api\/v1\/?$/, '');
