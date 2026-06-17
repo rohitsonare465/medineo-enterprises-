@@ -7,7 +7,7 @@
 
 ### Base URL
 ```
-Production:  https://api.medineo.com/v1
+Production:  https://medineo-erp-api.onrender.com/api/v1
 Development: http://localhost:3001/api/v1
 ```
 
