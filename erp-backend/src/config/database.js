@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
-      // MongoDB driver options
+      family: 4 // Force IPv4 to avoid slow DNS resolution of IPv6 in Node.js 17+ on containerized platforms (like Render)
     });
 
     console.log(`✅ MongoDB Connected: ${conn.connection.host}`);

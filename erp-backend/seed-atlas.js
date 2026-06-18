@@ -11,7 +11,7 @@ const ATLAS_URI = 'mongodb+srv://medineoenterprises_db_user:swAoqXYjruHhgn8U@med
 async function seedAtlas() {
   try {
     console.log('Connecting to MongoDB Atlas...');
-    await mongoose.connect(ATLAS_URI);
+    await mongoose.connect(ATLAS_URI, { family: 4 });
     console.log('✅ Connected to Atlas');
 
     // Check if admin user already exists

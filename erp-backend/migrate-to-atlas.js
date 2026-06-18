@@ -36,12 +36,12 @@ async function migrateData() {
 
     // Connect to local MongoDB
     console.log('📍 Connecting to LOCAL MongoDB...');
-    localConnection = await mongoose.createConnection(LOCAL_MONGODB_URI).asPromise();
+    localConnection = await mongoose.createConnection(LOCAL_MONGODB_URI, { family: 4 }).asPromise();
     console.log('✅ Connected to LOCAL MongoDB\n');
 
     // Connect to Atlas MongoDB
     console.log('☁️  Connecting to ATLAS MongoDB...');
-    atlasConnection = await mongoose.createConnection(ATLAS_MONGODB_URI).asPromise();
+    atlasConnection = await mongoose.createConnection(ATLAS_MONGODB_URI, { family: 4 }).asPromise();
     console.log('✅ Connected to ATLAS MongoDB\n');
 
     console.log('=' .repeat(50));

@@ -88,3 +88,29 @@ mongodb+srv://username:password@cluster.mongodb.net/database_name
 ```
 
 All special characters in password should be URL-encoded. If your password has `@`, encode it as `%40`.
+
+## Resolving Startup Latency & Cold Starts
+
+### ⚡ Render Free Tier "Cold Start" Delay
+If you are deploying the backend on the **Render Free Tier**, Render will automatically suspend (spin down) your service after **15 minutes** of inactivity. 
+The next request to the API will trigger a **cold start**, which takes **50+ seconds** to boot the service and connect to the database.
+
+**Mitigation (Recommended):**
+Set up a free pinging service (like [UptimeRobot](https://uptimerobot.com) or [Cron-Job.org](https://cron-job.org)) to hit the backend's health check endpoint every **10–14 minutes**:
+```
+https://your-backend-url.onrender.com/health
+```
+This keeps the container warm and prevents it from entering sleep mode, ensuring zero startup delay for active users.
+
+### ⚡ Node.js IPv6 DNS Resolution Latency
+In Node.js 17+, the runtime defaults to resolving IPv6 addresses first. In environments like Render or AWS where IPv6 isn't fully set up for the database or outgoing mail SMTP servers, DNS lookups for MongoDB Atlas can hang for **5–30 seconds** before falling back to IPv4.
+
+**Applied Fixes in code:**
+1. We set DNS result order to prioritize IPv4 first at the entry point of the app (`src/index.js`):
+   ```javascript
+   const dns = require('dns');
+   if (dns.setDefaultResultOrder) {
+     dns.setDefaultResultOrder('ipv4first');
+   }
+   ```
+2. We forced Mongoose to connect over IPv4 using the `{ family: 4 }` configuration option in `database.js` and command line scripts.

@@ -1,4 +1,10 @@
 // Medineo ERP Backend - Main Entry Point
+const dns = require('dns');
+// Force Node.js to resolve IPv4 addresses first to avoid slow DNS lookup of IPv6 on Render/Atlas
+if (dns.setDefaultResultOrder) {
+  dns.setDefaultResultOrder('ipv4first');
+}
+
 const path = require('path');
 const express = require('express');
 const cors = require('cors');
