@@ -242,24 +242,29 @@ exports.searchForBilling = async (req, res, next) => {
       });
     }
 
+    // Match medicines by text only. We intentionally do NOT gate on the cached
+    // `currentStock` field here: it can be stale (it is not refreshed when a
+    // batch silently crosses its expiry date), which caused medicines to show
+    // up in billing with "no available batches". Availability is decided below
+    // from the actual batches.
     const medicines = await Medicine.find({
       isActive: true,
-      currentStock: { $gt: 0 },
       $or: [
         { name: new RegExp(q, 'i') },
         { code: new RegExp(q, 'i') },
         { genericName: new RegExp(q, 'i') }
       ]
     })
-    .limit(20)
+    .limit(50)
     .lean();
 
-    // Get available batches for each medicine
+    // Get available batches for each medicine. Availability is based on the
+    // live `expiryDate` comparison (not the stored `isExpired` flag, which goes
+    // stale) plus quantity > 0. A missing expiry date is treated as valid.
     const medicineIds = medicines.map(m => m._id);
     const batches = await Batch.find({
       medicine: { $in: medicineIds },
       quantity: { $gt: 0 },
-      isExpired: false,
       $or: [
         { expiryDate: { $gt: new Date() } },
         { expiryDate: null },
@@ -277,11 +282,18 @@ exports.searchForBilling = async (req, res, next) => {
       return acc;
     }, {});
 
-    // Combine medicines with their batches
-    const result = medicines.map(medicine => ({
-      ...medicine,
-      batches: batchesByMedicine[medicine._id.toString()] || []
-    }));
+    // Only return medicines that actually have sellable batches, and report
+    // their real available stock so the UI and billing always agree.
+    const result = medicines
+      .filter(medicine => batchesByMedicine[medicine._id.toString()]?.length)
+      .map(medicine => {
+        const medicineBatches = batchesByMedicine[medicine._id.toString()];
+        return {
+          ...medicine,
+          currentStock: medicineBatches.reduce((sum, b) => sum + b.quantity, 0),
+          batches: medicineBatches
+        };
+      });
 
     res.status(200).json({
       success: true,

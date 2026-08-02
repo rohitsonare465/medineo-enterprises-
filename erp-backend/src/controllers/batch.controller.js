@@ -83,11 +83,18 @@ exports.getBatch = async (req, res, next) => {
 // @access  Private
 exports.getAvailableBatches = async (req, res, next) => {
   try {
+    // Availability is based on the live `expiryDate` comparison (not the stored
+    // `isExpired` flag, which is only refreshed on save and goes stale). A
+    // missing expiry date is treated as valid. This matches the billing search
+    // and stock overview so all three stay consistent.
     const batches = await Batch.find({
       medicine: req.params.medicineId,
       quantity: { $gt: 0 },
-      isExpired: false,
-      expiryDate: { $gt: new Date() }
+      $or: [
+        { expiryDate: { $gt: new Date() } },
+        { expiryDate: null },
+        { expiryDate: { $exists: false } }
+      ]
     })
     .sort({ expiryDate: 1, createdAt: 1 }) // FIFO
     .lean();

@@ -40,10 +40,24 @@ exports.getStockOverview = async (req, res, next) => {
       Medicine.countDocuments(query)
     ]);
 
-    // Get batch count for each medicine
+    // Get batch count for each medicine. Only count batches that are actually
+    // sellable: quantity > 0 and not past their expiry date (a missing expiry
+    // date is treated as valid). This mirrors the filter used when selecting
+    // batches for billing so the Stock page never shows phantom stock that
+    // cannot be sold. We rely on the live `expiryDate` comparison rather than
+    // the stored `isExpired` flag, which is only refreshed on save and goes
+    // stale as batches silently cross their expiry date.
     const medicineIds = medicines.map(m => m._id);
     const batchCounts = await Batch.aggregate([
-      { $match: { medicine: { $in: medicineIds }, quantity: { $gt: 0 } } },
+      { $match: {
+        medicine: { $in: medicineIds },
+        quantity: { $gt: 0 },
+        $or: [
+          { expiryDate: { $gt: new Date() } },
+          { expiryDate: null },
+          { expiryDate: { $exists: false } }
+        ]
+      } },
       { $group: { _id: '$medicine', count: { $sum: 1 }, totalQty: { $sum: '$quantity' } } }
     ]);
 
@@ -52,14 +66,21 @@ exports.getStockOverview = async (req, res, next) => {
       return acc;
     }, {});
 
-    const stockData = medicines.map(m => ({
-      ...m,
-      batchCount: batchCountMap[m._id.toString()]?.count || 0,
-      actualStock: batchCountMap[m._id.toString()]?.totalQty || 0,
-      stockStatus: m.currentStock === 0 ? 'out_of_stock' :
-        m.currentStock < m.minStockLevel ? 'low_stock' :
-          m.currentStock > m.maxStockLevel ? 'over_stock' : 'normal'
-    }));
+    const stockData = medicines.map(m => {
+      // Use the live available quantity (from non-expired batches) as the
+      // displayed stock so the Stock page and the sales bill always agree,
+      // even if the cached `currentStock` field is stale.
+      const availableStock = batchCountMap[m._id.toString()]?.totalQty || 0;
+      return {
+        ...m,
+        currentStock: availableStock,
+        batchCount: batchCountMap[m._id.toString()]?.count || 0,
+        actualStock: availableStock,
+        stockStatus: availableStock === 0 ? 'out_of_stock' :
+          availableStock < m.minStockLevel ? 'low_stock' :
+            availableStock > m.maxStockLevel ? 'over_stock' : 'normal'
+      };
+    });
 
     res.status(200).json({
       success: true,
