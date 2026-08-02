@@ -178,8 +178,21 @@ medicineSchema.pre('save', async function(next) {
 // Method to update stock from batches
 medicineSchema.methods.updateStockFromBatches = async function() {
   const Batch = mongoose.model('Batch');
+  // Exclude expired batches when calculating current stock so UI and
+  // billing logic remain consistent. This mirrors the filters used when
+  // selecting batches for selling (quantity > 0, not expired, and
+  // expiryDate in the future or missing).
   const result = await Batch.aggregate([
-    { $match: { medicine: this._id, quantity: { $gt: 0 } } },
+    { $match: {
+      medicine: this._id,
+      quantity: { $gt: 0 },
+      isExpired: false,
+      $or: [
+        { expiryDate: { $gt: new Date() } },
+        { expiryDate: null },
+        { expiryDate: { $exists: false } }
+      ]
+    } },
     { $group: { _id: null, totalStock: { $sum: '$quantity' } } }
   ]);
   this.currentStock = result[0]?.totalStock || 0;
